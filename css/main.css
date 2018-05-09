@@ -1,0 +1,35 @@
+
+
+.columnaMenu{
+    padding: 5px;
+    float: left;
+    width: 14%;
+    height: 100%;
+    text-align: justify;
+}
+
+.columnaMain{
+    padding: 5px;
+    float: right;
+    width: 80%;
+    text-align: justify;
+}
+
+.columnaMainLeft{
+    padding: 10px;
+    float: left;
+    width: 35%;
+    text-align: justify;
+}
+
+.columnaMainRight{
+    padding: 10px;
+    float: right;
+    width: 35%;
+    text-align: justify;
+}
+
+div {
+    margin: auto;
+    display: block;
+}
