@@ -1,3 +1,21 @@
+<?php
+/**
+* Created by PhpStorm.
+* User: Kuro
+* Date: 12/05/2018
+* Time: 0:56
+*/
+session_start();
+
+
+if(isset($_POST['logout'])){
+    session_destroy();
+    session_start();
+}
+
+include 'interfaz/templates/Template.php';
+$template = new Template();
+?>
 
 <!DOCTYPE html>
 <!--
@@ -26,71 +44,28 @@ and open the template in the editor.
 </head>
 
 <body>
-<div style="padding-top: 5px">
-    <nav class="light-blue lighten-1" role="navigation">
-        <a id="logo-container" href="index.php" class="brand-logo"><img src="interfaz/app_images/icono.png" height="60" width="60"></a>
-        <div class="nav-wrapper container">
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#">Sing up</a></li>
-                <li><a href="#">Log in</a></li>
-            </ul>
-
-            <ul id="nav-mobile" class="sidenav">
-                <li><a href="#">Sing up</a></li>
-                <li><a href="#">Log in</a></li>
-            </ul>
-            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        </div>
-    </nav>
-    <div id="menu-oculto" style="display: none"><a><i class="small material-icons">menu</i></a></div>
+    <?php echo $template->navBar();?>
     <div class="columnaMenu" id="index-menu">
-        <header id="menu" class="light-blue lighten-1">
-            <header id="logo">
-            </header>
-            <ul class="menu">
-                <li><a href="#"><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navegar<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
-                    <ul class="submenu">
-                        <li><a href="#">Galerias<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
-                        <li><a href="#">Artistas</a></li>
-                        <li><a href="#"></a></li>
-                        <li><a href="#">Grupo<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
-                        <li><a href="#">item 5</a></li>
-                        <li><a href="#">item 6</a></li>
-                        <li><a href="#">item 7</a></li>
-                        <li><a href="#">item 8</a></li>
-                        <li><a href="#">item 9</a></li>
-                        <li><a href="#">item 10 largo </a></li>
-                    </ul>
-                </li>
-            </ul>
-        </header>
+        <?php echo $template->menu();?>
     </div>
-    <div class="grey">
-        <div class="columnaMain">
-            <div class="section no-pad-bot" id="index-banner">
-
-                <div class="container light-green lighten-4">
-
-                    <object name="principal" data="interfaz/templates/mainBody.php" width="100%" height="1000">
-                        <!--Contenedor de información variada-->
-                    </object>
+    <div class="columnaMain">
+        <div class="section no-pad-bot" id="index-banner">
+            <div id="main_body" class="container light-green lighten-4">
+                <div class="columnaMainLeft" style="margin: auto">
+                    <img src="interfaz/app_images/logo.png" width="100%" height="100%">
+                </div>
+                <div class="columnaMainRight">
+                    <form method="post" name="login">
+                        <label for="user">Usuario</label>
+                        <input id="user" type="text" name="username"/><br/>
+                        <label for="pass">Contraseña</label>
+                        <input id="pass" type="password" name="password"/><br/>
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Login</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script type="text/javascript" src="js/materialize.min.js"></script>
-
-<script>
-    $("#menu-oculto").click(function() {
-        $(this).hide();
-        $("#index-menu").show();
-    });
-
-    $("#boton-menu").click(function() {
-        $("#index-menu").hide();
-        $("#menu-oculto").show();
-    });
-</script>
+    <?php echo $template->footer();?>
 </body>
 </html>

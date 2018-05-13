@@ -26,5 +26,151 @@ class UsuarioDAO
         return self::$instancia;
     }
 
+    public function getListaUsuarios()
+    {
+
+        try {
+            $consulta="SELECT * FROM usuarios";
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $lUsuarios=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getListaUsuarios";
+        }
+        foreach ($lUsuarios as $clave => $valor){
+            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], null);
+        }
+        return $arrayUsuarios;
+    }
+
+    public function getUsuario($numUsuario)
+    {
+        try {
+            $consulta="SELECT * FROM usuarios WHERE id=" .$numUsuario;
+            $query=$this->db->preparar($consulta);
+            $query->execute();
+            $tUsuarios=$query->fetchAll();
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getUnUsuario";
+        }
+        if (empty($tUsuarios)){ //Si no existe ese numCliente
+            $u=null;
+        }
+        else{
+
+            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1],
+                $tUsuarios[0][2], $tUsuarios[0][3],
+                $tUsuarios[0][4], $tUsuarios[0][5], null);
+        }
+        return $u;
+    }
+
+    public function getLoginPassword($username, $password)
+    {
+        try {
+            $consulta="SELECT * FROM usuarios WHERE username='" . $username . "'";
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $aUsuario=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getLoginPassword";
+        }
+        if (empty($aUsuario)){ //Si no existe ese idUsuario
+            $u=NULL;
+        } else {
+            try {
+                $consulta1 = "SELECT * FROM acceso WHERE id_usuario='" . $aUsuario[0][0] . "' and password='" . $password . "'";
+
+                $query1 = $this->db->preparar($consulta1);
+
+                $query1->execute();
+                $aAcceso = $query->fetchAll();
+
+            } catch (Exception $ex) {
+                echo "Se ha producido un error en getLoginPassword";
+            }
+            if (empty($aAcceso)) {
+                $a = null;
+            } else {
+                $a = new Acceso($aAcceso[0][0], $aAcceso[0][1], $aAcceso[0][2], $aAcceso[0][3]);
+                $u = new Usuario($aUsuario[0][0], $aUsuario[0][1], $aUsuario[0][2], $aUsuario[0][3], $aUsuario[0][4], $aUsuario[0][5], $a);
+
+            }
+        }
+        return $u;
+    }
+
+
+    public function altaUsuario(Usuario $u)
+    {
+        try {
+            $consulta="INSERT INTO usuarios (id,username,email,nombre,apellido,birth_date) values (null,?,?,?,?,?)";
+
+            $query=$this->db->preparar($consulta);
+            $query->bindParam(1,$u->getUsername());
+            $query->bindParam(2,$u->getEmail());
+            $query->bindParam(3,$u->getNombre());
+            $query->bindParam(4,$u->getAppelido());
+            $query->bindParam(5,$u->getBirthDate());
+
+            $query->execute();
+
+            try {
+                $consulta="SELECT id FROM usuarios WHERE username='". $u->getUsername() ."'";
+                $query=$this->db->preparar($consulta);
+                $query->execute();
+                $idUser = $query->fetchAll();
+
+
+                $consulta="INSERT INTO acceso (id_usuario,password,ultimo_acceso,rol) values (?,?,?,?)";
+
+                $query=$this->db->preparar($consulta);
+                $query->bindParam(1,$idUser);
+                $query->bindParam(2,$u->getAcceso()->getPassword());
+                $query->bindParam(3,$u->getAcceso()->getUltimoAcceso());
+                $query->bindParam(4,$u->getAcceso()->getRol());
+
+                $query->execute();
+                $insertado=true;
+
+
+            } catch (Exception $ex) {
+                $insertado=false;
+            }
+
+        } catch (Exception $ex) {
+            $insertado=false;
+        }
+        return  $insertado;
+    }
+    /*
+    public function bajaUsuario($idUsuario)
+    {
+        try {
+            $consulta="UPDATE usuarios SET activo=0 WHERE"
+                . " id_usuario="
+                .$idUsuario. ";";
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $eliminado=true;
+
+
+        } catch (Exception $ex) {
+            $eliminado=false;
+        }
+
+        return  $eliminado;
+    }*/
+
+
+
 
 }

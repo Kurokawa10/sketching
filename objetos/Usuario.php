@@ -12,6 +12,8 @@ class Usuario{
     private $id;
     private $username;
     private $email;
+    private $nombre;
+    private $appelido;
     private $birthDate;
     private $acceso;
 
@@ -20,14 +22,18 @@ class Usuario{
      * @param $id
      * @param $username
      * @param $email
+     * @param $nombre
+     * @param $appelido
      * @param $birthDate
      * @param $acceso
      */
-    public function __construct($id, $username, $email, $birthDate, $acceso)
+    public function __construct($id, $username, $email, $nombre, $appelido, $birthDate, $acceso)
     {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
+        $this->nombre = $nombre;
+        $this->appelido = $appelido;
         $this->birthDate = $birthDate;
         $this->acceso = $acceso;
     }
@@ -83,6 +89,38 @@ class Usuario{
     /**
      * @return mixed
      */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppelido()
+    {
+        return $this->appelido;
+    }
+
+    /**
+     * @param mixed $appelido
+     */
+    public function setAppelido($appelido): void
+    {
+        $this->appelido = $appelido;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getBirthDate()
     {
         return $this->birthDate;
@@ -111,6 +149,7 @@ class Usuario{
     {
         $this->acceso = $acceso;
     }
+
 
 
 
