@@ -7,46 +7,50 @@
  */
 session_start();
 
+var_dump($_SESSION);
+
+
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
+require_once '../../objetos/Acceso.php';
 
 if(!empty($_SESSION)){
     $direccion = '/sketching/index.php';
     header('Location: '.$direccion);
 }
 
-if (isset($_POST['submit'])) {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-    //$password = hash('sha256', $_POST['password']);
+include '../templates/Template.php';
+$template = new Template();
 
-    echo "El login introducido es: $login<br>";
+if (isset($_POST['submit'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    echo "El login introducido es: $username<br>";
     echo "El password encriptado es: $password<br>";
-    if (isset($login) && isset($password)) {
+    if (isset($username) && isset($password)) {
 
         $usuarioDao = UsuarioDAO::singletonUsuario();
-        $u = $usuarioDao->getLoginPassword($login, $password);
-        if (!is_null($u) && $u->getActivo() == 1) {
+        $u = $usuarioDao->getLoginPassword($username, $password);
+        if (!is_null($u)) {
             //Guardar datos de este usuario en la sessión
-            $_SESSION['idUsuario'] = $u->getIdUsuario();
-            $_SESSION['login'] = $u->getLogin();
-            $_SESSION['tipoUsuario'] = $u->getTipo();
-            $_SESSION['nombre'] = $clie->getNombre() ;
-            $_SESSION['apellido1'] = $clie->getApellido1();
-            $_SESSION['apellido2'] = $clie->getApellido2();
-            header('Location: /sketching/index.php');
-            }
-        } else {
-            header('Location: login.php?identificado=1');
+            $_SESSION['username'] = $u->getUsername();
+            $_SESSION['profileImage'] = $u->getProfileImage();
+            $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
+            $_SESSION['rol'] = $u->getAcceso()->getRol();
+
+            header('Location: /sketching/index');
+        }else {
+            header('Location: login?identificado=1');
         }
     }
+}
 ?>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Sketching</title>
-
 
     <link rel="icon" href="../app_images/icono.png">
 
@@ -62,14 +66,47 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<?php echo $template->navBar();?>
+<?php echo $template->navBar(null);?>
 <div class="columnaMenu" id="index-menu">
     <?php echo $template->menu();?>
 </div>
 <div class="columnaMain">
-
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="light-green lighten-4">
+            <div class="columnaMainLeft" style="margin: auto">
+                <img class="responsive-img" src="../app_images/logo.png">
+            </div>
+            <div class="columnaMainRight">
+                <?php
+                if (isset($_GET['identificado']))
+                    if ($_GET['identificado'] == 1) {
+                        ?>
+                        <span style='color:red; text-align: center'>
+                            <b>Fallo de autenticación.Intentelo de nuevo</b>
+                        </span>
+                        <?php
+                    }
+                ?>
+                <form method="post" action="Login" name="login">
+                    <label for="user" class="text-lighten-2"><h6><strong>Usuario</strong></h6></label>
+                    <input id="user" type="text" name="username" required/><br/>
+                    <label for="pass"><h6><strong>Contraseña</strong></h6></label>
+                    <input id="pass" type="password" name="password" required/><br/>
+                    <button class="btn waves-effect waves-light" type="submit" name="submit" value="enviar" onclick="cifrar()">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <?php echo $template->footer();?>
+
+<script src="../../js/sha256.js"></script>
+<script>
+    function cifrar(){
+        var input_pass = document.getElementById("pass");
+        input_pass.value = sha256(input_pass.value);
+    }
+</script>
 
 </body>
 </html>

@@ -14,20 +14,21 @@
     float: right;
     width: 85%;
     text-align: justify;
-    background-color: grey;
+    background-color: lightgray;
 }
 
 .columnaMainLeft{
     padding: 10px;
     float: left;
-    width: 35%;
+    width: 45%;
     text-align: justify;
 }
 
 .columnaMainRight{
     padding: 10px;
     float: right;
-    width: 35%;
+    width: 45%;
+    align-content: center;
     text-align: justify;
 }
 

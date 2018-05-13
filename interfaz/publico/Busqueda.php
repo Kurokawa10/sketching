@@ -6,7 +6,20 @@
  * Time: 17:01
  */
 
-include '../templates/Template.php';
+include_once '../templates/Template.php';
+include_once '../../objetos/Usuario.php';
+include_once '../../persistencia/UsuarioDAO.php';
+
+
+if(!isset($_SESSION)){
+    //Elementos Logged out
+    $profileImage = null;
+}else{
+    //Elementos logged in
+
+    $profileImage = $_SESSION['profileImage'];
+}
+
 $template = new Template();
 
 ?>
@@ -36,7 +49,7 @@ and open the template in the editor.
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<?php echo $template->navBar();?>
+<?php echo $template->navBar($profileImage);?>
 <div class="columnaMenu" id="index-menu">
     <?php echo $template->menu();?>
 </div>
@@ -44,9 +57,43 @@ and open the template in the editor.
     <?php
 
     if(isset($_GET['search'])){
+        $busqueda = $_GET['search'];
+        $usuarioDao = UsuarioDAO::singletonUsuario();
+        $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
+        if(count($listaUsuarios) === 0){
+            echo'<p><h4>Busquera erronea: Usuario no encontrado</h4></p>';
+        }else if(count($listaUsuarios) === 1){
+            //Hacer que si solo encuentre a uno lo mande directamente a su perfil
+        }
+        else{
         ?>
-        <p><h2>Busquera En curso</h2></p>
-        <?php
+        <table class="striped responsive-table">
+            <thead>
+            <tr>
+                <th>Autor</th>
+                <th></th>
+                <th>estilo</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <?php foreach ($listaUsuarios as $valor){
+                echo '<tr><td>
+                    <div class="row valign-wrapper">
+                        <div class="col s2">
+                            <img src="'. $valor->getProfileImage().'" alt="" class="circle responsive-img">
+                        </div>
+                        <div class="col s10">
+                            <span class="black-text">
+                               '. $valor->getUsername() .'
+                            </span>
+                        </div>
+                    </div>
+          </td></tr> ';
+            } ?>
+            </tbody>
+        </table>
+        <?php}
     }else{
         ?>
         <p><h4>Busquera erronea: Campo vacio</h4></p>

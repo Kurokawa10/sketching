@@ -16,6 +16,7 @@ class Usuario{
     private $appelido;
     private $birthDate;
     private $acceso;
+    private $profile_image;
 
     /**
      * Usuario constructor.
@@ -26,8 +27,9 @@ class Usuario{
      * @param $appelido
      * @param $birthDate
      * @param $acceso
+     * @param $profile_image
      */
-    public function __construct($id, $username, $email, $nombre, $appelido, $birthDate, $acceso)
+    public function __construct($id, $username, $email, $nombre, $appelido, $birthDate, $profile_image, $acceso)
     {
         $this->id = $id;
         $this->username = $username;
@@ -36,6 +38,7 @@ class Usuario{
         $this->appelido = $appelido;
         $this->birthDate = $birthDate;
         $this->acceso = $acceso;
+        $this->profile_image = $profile_image;
     }
 
     /**
@@ -150,7 +153,21 @@ class Usuario{
         $this->acceso = $acceso;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProfileImage()
+    {
+        return $this->profile_image;
+    }
 
+    /**
+     * @param mixed $profile_image
+     */
+    public function setProfileImage($profile_image): void
+    {
+        $this->profile_image = $profile_image;
+    }
 
 
 }

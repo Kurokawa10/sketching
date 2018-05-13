@@ -7,7 +7,6 @@
  */
 
 require_once 'Conexion.php';
-require_once '../objetos/Usuario.php';
 
 class UsuarioDAO
 {
@@ -26,7 +25,7 @@ class UsuarioDAO
         return self::$instancia;
     }
 
-    public function getListaUsuarios()
+    public function getTodosUsuarios()
     {
 
         try {
@@ -41,7 +40,27 @@ class UsuarioDAO
             echo "Se ha producido un error en getListaUsuarios";
         }
         foreach ($lUsuarios as $clave => $valor){
-            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], null);
+            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6],null);
+        }
+        return $arrayUsuarios;
+    }
+
+    public function getBusquedaUsuarios($busqueda)
+    {
+
+        try {
+            $consulta="SELECT * FROM usuarios WHERE username LIKE '%". $busqueda ."%';";
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $lUsuarios=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getListaUsuarios";
+        }
+        foreach ($lUsuarios as $clave => $valor){
+            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], null);
         }
         return $arrayUsuarios;
     }
@@ -56,14 +75,12 @@ class UsuarioDAO
         } catch (Exception $ex) {
             echo "Se ha producido un error en getUnUsuario";
         }
-        if (empty($tUsuarios)){ //Si no existe ese numCliente
+        if (empty($tUsuarios)){
             $u=null;
         }
         else{
 
-            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1],
-                $tUsuarios[0][2], $tUsuarios[0][3],
-                $tUsuarios[0][4], $tUsuarios[0][5], null);
+            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], null);
         }
         return $u;
     }
@@ -81,28 +98,28 @@ class UsuarioDAO
         } catch (Exception $ex) {
             echo "Se ha producido un error en getLoginPassword";
         }
-        if (empty($aUsuario)){ //Si no existe ese idUsuario
+        if (empty($aUsuario)){
             $u=NULL;
         } else {
             try {
-                $consulta1 = "SELECT * FROM acceso WHERE id_usuario='" . $aUsuario[0][0] . "' and password='" . $password . "'";
-
+                $consulta1 = "SELECT * FROM acceso WHERE id_usuario=" . $aUsuario[0][0] . " and password='" . $password . "'";
                 $query1 = $this->db->preparar($consulta1);
-
                 $query1->execute();
-                $aAcceso = $query->fetchAll();
+                $aAcceso = $query1->fetchAll();
 
             } catch (Exception $ex) {
                 echo "Se ha producido un error en getLoginPassword";
             }
             if (empty($aAcceso)) {
                 $a = null;
+                $u = null;
             } else {
-                $a = new Acceso($aAcceso[0][0], $aAcceso[0][1], $aAcceso[0][2], $aAcceso[0][3]);
-                $u = new Usuario($aUsuario[0][0], $aUsuario[0][1], $aUsuario[0][2], $aUsuario[0][3], $aUsuario[0][4], $aUsuario[0][5], $a);
+                $a = new Acceso($aAcceso[0][0], null, $aAcceso[0][2], $aAcceso[0][3]);
+                $u = new Usuario($aUsuario[0][0], $aUsuario[0][1], $aUsuario[0][2], $aUsuario[0][3], $aUsuario[0][4], $aUsuario[0][5],  $aUsuario[0][6], $a);
 
             }
         }
+        var_dump($u);
         return $u;
     }
 
@@ -110,7 +127,7 @@ class UsuarioDAO
     public function altaUsuario(Usuario $u)
     {
         try {
-            $consulta="INSERT INTO usuarios (id,username,email,nombre,apellido,birth_date) values (null,?,?,?,?,?)";
+            $consulta="INSERT INTO usuarios (id, username, email, nombre, apellido, birth_date, profile_image) values (null,?,?,?,?,?,?)";
 
             $query=$this->db->preparar($consulta);
             $query->bindParam(1,$u->getUsername());
@@ -118,6 +135,7 @@ class UsuarioDAO
             $query->bindParam(3,$u->getNombre());
             $query->bindParam(4,$u->getAppelido());
             $query->bindParam(5,$u->getBirthDate());
+            $query->bindParam(5,$u->getProfileImage());
 
             $query->execute();
 
