@@ -59,6 +59,7 @@ class UsuarioDAO
         } catch (Exception $ex) {
             echo "Se ha producido un error en getListaUsuarios";
         }
+        $arrayUsuarios = null;
         foreach ($lUsuarios as $clave => $valor){
             $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], null);
         }

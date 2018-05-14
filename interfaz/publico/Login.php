@@ -15,7 +15,7 @@ require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
 if(!empty($_SESSION)){
-    $direccion = '/sketching/index.php';
+    $direccion = '/sketching/index';
     header('Location: '.$direccion);
 }
 
@@ -107,6 +107,5 @@ if (isset($_POST['submit'])) {
         input_pass.value = sha256(input_pass.value);
     }
 </script>
-
 </body>
 </html>

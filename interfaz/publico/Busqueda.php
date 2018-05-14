@@ -24,11 +24,6 @@ $template = new Template();
 
 ?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
 <head>
     <meta charset="UTF-8">
@@ -49,9 +44,9 @@ and open the template in the editor.
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<?php echo $template->navBar($profileImage);?>
+<?php echo $template->navBar($profileImage); ?>
 <div class="columnaMenu" id="index-menu">
-    <?php echo $template->menu();?>
+    <?php echo $template->menu(); ?>
 </div>
 <div class="columnaMain">
     <?php
@@ -93,16 +88,16 @@ and open the template in the editor.
             } ?>
             </tbody>
         </table>
-        <?php}
+        <?php }
     }else{
         ?>
         <p><h4>Busquera erronea: Campo vacio</h4></p>
     <?php
     }
 
-    ?>
+     ?>
 </div>
-<?php echo $template->footer();?>
+<?php echo $template->footer(); ?>
 
 </body>
 </html>

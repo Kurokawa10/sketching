@@ -21,9 +21,9 @@ class template
                 <li>
                     <form method="get" name="search" action="/sketching/interfaz/publico/Busqueda">
                         <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s10">
                           <i class="material-icons prefix">search</i>
-                          <input id="search" name="search" type="text" placeholder="Search" class="validate">
+                          <input id="search" name="search" type="search" placeholder="Search" class="validate">
                         </div>
                       </div>
                     </form>
@@ -46,7 +46,6 @@ class template
                         <li><form name="formLogout" action="/sketching/index" method="POST" enctype="multipart/form-data">
                         <input type="submit" value="logout" name="logout" class="small btn mdi-navigation-arrow-drop-down right red">
                     </form></li>
-
 ';
                 }
             $html .= '
@@ -64,13 +63,14 @@ class template
 
     public function menu(){
         return '
-<div id="menu-oculto" style="display: none"><a><i class="small material-icons">menu</i></a></div>
+<div id="menu-oculto" style="display:none" onclick="mostrar()"><a><i class="small material-icons">menu</i></a></div>
 
+    <div id="index-menu" onclick="ocultar()">
     <header id="menu" class="light-blue lighten-1">
         <header id="logo">
         </header>
         <ul class="menu">
-            <li><a href="#"><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navegar<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
+            <li><a><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navegar<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
                 <ul class="submenu">
                     <li><a href="#">Galerias<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
                     <li><a href="#">Artistas</a></li>
@@ -86,19 +86,20 @@ class template
             </li>
         </ul>
     </header>
-<script type="text/javascript" src="../../js/materialize.min.js"></script>
+    </div>
+    <!--WHY GOOD WHYYYYYYY-->
+<script type="text/javascript" src="/sketching/js/materialize.min.js"></script>
+<script>$(\'#menu-oculto\').on("click", function() {
+    alert( "Handler for .click() called." );
+    $(this).hide();
+    $(\'#index-menu\').show();
+});
 
-<script>
-    $("#menu-oculto").click(function() {
-        $(this).hide();
-        $("#index-menu").show();
-    });
-
-    $("#boton-menu").click(function() {
-        $("#index-menu").hide();
-        $("#menu-oculto").show();
-    });
-</script>';
+$(\'#boton-menu\').on("click", function() {
+    alert( "Handler for .click() called." );
+    $(\'#index-menu\').hide();
+    $(\'#menu-oculto\').show();
+});</script>';
     }
 
 
@@ -118,7 +119,7 @@ class template
                 <h5 class="white-text">Links</h5>
                 <ul>
                   <li><a class="grey-text text-lighten-3" href="https://iescastelar.educarex.es/">I.E.S. Castelar</a></li>
-                  <li><a class="grey-text text-lighten-3" href="http://github.homelinux.com:8085/RobertoGarcia">Mi Proyecto <img height="30px" src="../app_images/gitlab-icon.png" alt=""></a></li>
+                  <li><a class="grey-text text-lighten-3" href="http://github.homelinux.com:8085/RobertoGarcia/sketching">Mi Proyecto <img height="30px" src="/sketching/interfaz/app_images/gitlab-icon.png" alt=""></a></li>
                 </ul>
               </div>
               <div class="col l3 s4" style="overflow: hidden;">

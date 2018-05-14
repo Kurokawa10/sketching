@@ -7,6 +7,20 @@
 */
 session_start();
 
+$path = ltrim($_SERVER['REQUEST_URI'], '/');    // Trim leading slash(es)
+$elements = explode('/', $path);                // Split path on slashes
+if(empty($elements[0])) {                       // No path elements means home
+
+} else{
+    echo 'HOLA: ';
+    var_dump($elements);
+    array_shift($elements);
+    if(count($elements) >= 2){
+        header('Location: /sketching/index');
+    }else{
+        #Redirigir al perfil publico del usuario.
+    }
+}
 
 if(isset($_POST['logout'])){
     session_destroy();
@@ -29,11 +43,6 @@ $template = new Template();
 ?>
 
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
 <head>
     <meta charset="UTF-8">
@@ -49,14 +58,19 @@ and open the template in the editor.
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" rel="script" src="js/materialize.js"></script>
+    <script type="text/javascript" rel="script" src="js/menu.js"></script>
+
+
+
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body>
+<body id="jaj">
     <?php echo $template->navBar($profImageURL);?>
-    <div class="columnaMenu" id="index-menu">
+    <div class="columnaMenu" id="colmain">
         <?php echo $template->menu();?>
     </div>
     <div class="columnaMain">
