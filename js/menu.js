@@ -1,23 +1,18 @@
 
-$('#menu-oculto').on("click", function() {
-    alert( "Handler for .click() called." );
-    $(this).hide();
-    $('#index-menu').show();
-});
 
-$('#boton-menu').on("click", function() {
-    alert( "Handler for .click() called." );
-    $('#index-menu').hide();
-    $('#menu-oculto').show();
-});
+$(function(){
+    $('#menu-oculto').on("click", function() {
+        $(this).hide();
+        $('#index-menu').show();
+        $('#colmenu').height('95%').width('9%');
+        $('.columnaMain').width('72%');
+    });
 
-/*
-function ocultar() {
-    $("#index-menu").hide();
-    $("#menu-oculto").show();
-}
+    $('#boton-menu').on("click", function() {
+        $('.columnaMain').width('87%');
+        $('#index-menu').hide();
+        $('#colmenu').height('0%').width('90%');
+        $('#menu-oculto').show().paddingLeft('10px');
 
-function mostrar() {
-    $("#menu-oculto").hide();
-    $("#index-menu").show();
-}*/
+    });// end of document ready
+})(jQuery); // end of jQuery name space

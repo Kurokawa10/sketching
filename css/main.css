@@ -11,8 +11,9 @@
 
 .columnaMain{
     padding: 5px;
-    float: right;
-    width: 85%;
+    margin: 20px;
+    float: left;
+    width: 82%;
     text-align: justify;
     background-color: lightgray;
 }

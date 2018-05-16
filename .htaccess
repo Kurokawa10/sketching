@@ -2,7 +2,7 @@
 #DirectoryIndex /sketching/index.php
 # Run Php without filename extension
 RewriteEngine on
-#RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-d
 
 FallbackResource /sketching/index.php
 #Options -Indexes

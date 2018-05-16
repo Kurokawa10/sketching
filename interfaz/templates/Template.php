@@ -8,18 +8,20 @@
 
 class template
 {
+    private $ROOT;
 
-    public function __construct()
+    public function __construct( String $ROOT )
     {
+        $this->ROOT = $ROOT;
     }
 
     public function navBar($profileImage){
         $html = '<nav id="naveBar" class="light-blue lighten-1" role="navigation">
-        <a id="logo-container" href="/sketching/index" class="brand-logo"><img src="/sketching/interfaz/app_images/icono.png" height="60" width="60"></a>
+        <a id="logo-container" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
         <div class="nav-wrapper container">
             <ul class="right hide-on-med-and-down">
                 <li>
-                    <form method="get" name="search" action="/sketching/interfaz/publico/Busqueda">
+                    <form method="get" name="search" action="'. $this->ROOT .'interfaz/publico/Busqueda">
                         <div class="row">
                         <div class="input-field col s10">
                           <i class="material-icons prefix">search</i>
@@ -29,8 +31,8 @@ class template
                     </form>
                 </li>' ;
                 if(empty($_SESSION)){
-                    $html .= '<li><a href="/sketching/interfaz/publico/Singup">Sing up</a></li>
-                    <li><a href="/sketching/interfaz/publico/Login">Log in</a></li>';
+                    $html .= '<li><a href="'. $this->ROOT .'interfaz/publico/Singup">Sing up</a></li>
+                    <li><a href="'. $this->ROOT .'interfaz/publico/Login">Log in</a></li>';
                 }else {
                     $html .= '<li>
                                 <div class="row valign-wrapper">
@@ -39,11 +41,11 @@ class template
                                     </div>
                                     <div class="col s5">
                                       <span class="black-text">
-                                        <a href="/sketching/interfaz/privado/Profile">Profile</a>
+                                        <a href="'. $this->ROOT .'interfaz/privado/Profile">Profile</a>
                                       </span>
                                     </div>
                                 </div></li>
-                        <li><form name="formLogout" action="/sketching/index" method="POST" enctype="multipart/form-data">
+                        <li><form name="formLogout" action="'. $this->ROOT .'index" method="POST" enctype="multipart/form-data">
                         <input type="submit" value="logout" name="logout" class="small btn mdi-navigation-arrow-drop-down right red">
                     </form></li>
 ';
@@ -63,12 +65,9 @@ class template
 
     public function menu(){
         return '
-<div id="menu-oculto" style="display:none" onclick="mostrar()"><a><i class="small material-icons">menu</i></a></div>
-
-    <div id="index-menu" onclick="ocultar()">
+    <div id="menu-oculto" style="display:none"><a><i class="small material-icons">menu</i></a></div>
+    <div id="index-menu">
     <header id="menu" class="light-blue lighten-1">
-        <header id="logo">
-        </header>
         <ul class="menu">
             <li><a><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navegar<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
                 <ul class="submenu">
@@ -87,19 +86,7 @@ class template
         </ul>
     </header>
     </div>
-    <!--WHY GOOD WHYYYYYYY-->
-<script type="text/javascript" src="/sketching/js/materialize.min.js"></script>
-<script>$(\'#menu-oculto\').on("click", function() {
-    alert( "Handler for .click() called." );
-    $(this).hide();
-    $(\'#index-menu\').show();
-});
-
-$(\'#boton-menu\').on("click", function() {
-    alert( "Handler for .click() called." );
-    $(\'#index-menu\').hide();
-    $(\'#menu-oculto\').show();
-});</script>';
+<script type="text/javascript" src="'. $this->ROOT .'js/materialize.min.js"></script>';
     }
 
 
@@ -119,7 +106,7 @@ $(\'#boton-menu\').on("click", function() {
                 <h5 class="white-text">Links</h5>
                 <ul>
                   <li><a class="grey-text text-lighten-3" href="https://iescastelar.educarex.es/">I.E.S. Castelar</a></li>
-                  <li><a class="grey-text text-lighten-3" href="http://github.homelinux.com:8085/RobertoGarcia/sketching">Mi Proyecto <img height="30px" src="/sketching/interfaz/app_images/gitlab-icon.png" alt=""></a></li>
+                  <li><a class="grey-text text-lighten-3" href="http://github.homelinux.com:8085/RobertoGarcia/sketching">Mi Proyecto <img height="30px" src="'. $this->ROOT .'interfaz/app_images/gitlab-icon.png" alt=""></a></li>
                 </ul>
               </div>
               <div class="col l3 s4" style="overflow: hidden;">

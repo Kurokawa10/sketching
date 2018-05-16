@@ -7,21 +7,22 @@
  */
 
 session_start();
+//$ROOT = '/~robertogarcia/';
+$ROOT = '/sketching/';
 
 var_dump($_SESSION);
-
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
 if(!empty($_SESSION)){
-    $direccion = '/sketching/index';
+    $direccion = $ROOT.'index';
     header('Location: '.$direccion);
 }
 
 include '../templates/Template.php';
-$template = new Template();
+$template = new Template($ROOT);
 
 if (isset($_POST['submit'])) {
     /*$username = $_POST['username'];
@@ -45,6 +46,8 @@ if (isset($_POST['submit'])) {
             header('Location: login?identificado=1');
         }
     }*/
+
+
 }
 ?>
 
@@ -62,13 +65,19 @@ if (isset($_POST['submit'])) {
     <link type="text/css" rel="stylesheet" href="../../css/materialize.min.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+
+    <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/menu.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/singup.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 <?php echo $template->navBar(null);?>
-<div class="columnaMenu" id="index-menu">
+<div class="columnaMenu" id="colmenu">
     <?php echo $template->menu();?>
 </div>
 <div class="columnaMain">
@@ -84,24 +93,24 @@ if (isset($_POST['submit'])) {
                     <?php
                 }
             ?>
-            <form method="post" action="Singup" name="singup">
+            <form method="post" action="Singup" id="form_singup" name="singup">
             <div class="columnaMainLeft">
-                <label for="user_singup" class="text-lighten-2 col s4"><h6><strong>Username</strong></h6></label>
+                <label  for="user_singup" class="text-lighten-2 col s4"><h6><strong id="user_singup_label">Username</strong></h6></label>
                 <input id="user_singup" type="text" name="username" required/><br/>
-                <label for="email_singup" class="text-lighten-2 col s4"><h6><strong>E-mail</strong></h6></label>
+                <label for="email_singup" class="text-lighten-2 col s4"><h6><strong id="email_singup_label">E-mail</strong></h6></label>
                 <input id="email_singup" type="email" name="email" required/><br/>
                 <label for="pass_singup" class="text-lighten-2 col s4"><h6><strong>Password</strong></h6></label>
-                <input id="pass_singup" type="text" name="pass" required/><br/>
-                <label for="pass2_singup" class="text-lighten-2 col s4"><h6><strong>Repeat Password</strong></h6></label>
-                <input id="pass2_singup" type="text" name="password2" required/><br/>
-                <div class="right-align"><button class="btn-large waves-effect waves-light right-aligned" type="submit" name="submit" value="singup" onclick="cifrar()">Login</button></div>
+                <input id="pass_singup" type="password" name="pass" required/><br/>
+                <pre><label for="pass2_singup" class="text-lighten-2 col s4"><h6><strong id="pass2_singup_label">Repeat Password</strong></h6></label></pre>
+                <input id="pass2_singup" type="password" name="password2" required/><br/>
+                <div class="right-align"><button class="btn-large waves-effect waves-light right-aligned" id="submit_singup" type="submit" name="submit" value="singup" onclick="cifrar()" disabled>Login</button></div>
             </div>
             <div class="columnaMainRight">
                 <label for="name_singup" class="text-lighten-2 col s4"><h6><strong>Name</strong></h6></label>
                 <input id="name_singup" type="text" name="name" required/><br/>
                 <label for="lastname_singup" class="text-lighten-2 col s4"><h6><strong>Last Name</strong></h6></label>
                 <input id="lastname_singup" type="text" name="lastname" required/><br/>
-                <label for="birth_singup" class="text-lighten-2 col s4"><h6><strong>Birth date</strong></h6></label>
+                <label for="birth_singup" class="text-lighten-2 col s4"><h6><strong id="birth_singup_label">Birth date</strong></h6></label>
                 <input id="birth_singup" type="date" name="birthdate" required/><br/>
                 <div class="file-field input-field">
                     <div class="btn">
@@ -109,9 +118,10 @@ if (isset($_POST['submit'])) {
                         <input type="file">
                     </div>
                     <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" name="profileimage">
+                        <input class="file-path validate" type="text" id="image_singup" name="profileimage">
                     </div>
                 </div>
+                <h6 id="image_singup_label" class="red-text"></h6>
             </div>
 
             </form>
@@ -123,13 +133,9 @@ if (isset($_POST['submit'])) {
 <script src="../../js/sha256.js"></script>
 <script>
     function cifrar(){
-        var input_pass = document.getElementById("pass");
+        let input_pass = document.getElementById("pass");
         input_pass.value = sha256(input_pass.value);
     }
-
-    $("#user_singup").keyup(function(){
-
-    });
 </script>
 </body>
 </html>

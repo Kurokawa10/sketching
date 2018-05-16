@@ -6,6 +6,8 @@
 * Time: 0:56
 */
 session_start();
+//$ROOT = '/~robertogarcia/';
+$ROOT = '/sketching/';
 
 $path = ltrim($_SERVER['REQUEST_URI'], '/');    // Trim leading slash(es)
 $elements = explode('/', $path);                // Split path on slashes
@@ -16,7 +18,7 @@ if(empty($elements[0])) {                       // No path elements means home
     var_dump($elements);
     array_shift($elements);
     if(count($elements) >= 2){
-        header('Location: /sketching/index');
+        header('Location: '. $ROOT .'index');
     }else{
         #Redirigir al perfil publico del usuario.
     }
@@ -35,11 +37,11 @@ if(empty($_SESSION)){
 }else{
     //Elementos logged in
     $profileImage = $_SESSION['profileImage'];
-    $profImageURL = '/sketching/interfaz/profile_images/profile_'.$profileImage;
+    $profImageURL = 'interfaz/profile_images/profile_'.$profileImage;
 }
 
 include 'interfaz/templates/Template.php';
-$template = new Template();
+$template = new Template($ROOT);
 ?>
 
 <!DOCTYPE html>
@@ -68,12 +70,12 @@ $template = new Template();
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body id="jaj">
+<body>
     <?php echo $template->navBar($profImageURL);?>
-    <div class="columnaMenu" id="colmain">
+    <div class="columnaMenu" id="colmenu" >
         <?php echo $template->menu();?>
     </div>
-    <div class="columnaMain">
+    <div class="columnaMain" id="colmain">
         <div class="section no-pad-bot" id="index-banner">
             <div class="container light-green lighten-4">
                 <div class="columnaMainLeft" style="margin: auto">

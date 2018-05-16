@@ -6,6 +6,8 @@
  * Time: 17:02
  */
 session_start();
+//$ROOT = '/~robertogarcia/';
+$ROOT = '/sketching/';
 
 var_dump($_SESSION);
 
@@ -15,12 +17,12 @@ require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
 if(!empty($_SESSION)){
-    $direccion = '/sketching/index';
+    $direccion = $ROOT.'index';
     header('Location: '.$direccion);
 }
 
 include '../templates/Template.php';
-$template = new Template();
+$template = new Template($ROOT);
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
@@ -39,7 +41,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
             $_SESSION['rol'] = $u->getAcceso()->getRol();
 
-            header('Location: /sketching/index');
+            header('Location: '.$direccion);
         }else {
             header('Location: login?identificado=1');
         }
@@ -61,13 +63,15 @@ if (isset($_POST['submit'])) {
     <link type="text/css" rel="stylesheet" href="../../css/materialize.min.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/menu.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 <?php echo $template->navBar(null);?>
-<div class="columnaMenu" id="index-menu">
+<div class="columnaMenu" id="colmenu">
     <?php echo $template->menu();?>
 </div>
 <div class="columnaMain">

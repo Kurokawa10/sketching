@@ -86,6 +86,25 @@ class UsuarioDAO
         return $u;
     }
 
+    public function getUsuarioExiste($usuario)
+    {
+        try {
+            $consulta="SELECT username FROM usuarios WHERE username='" .$usuario."'";
+            $query=$this->db->preparar($consulta);
+            $query->execute();
+            $tUsuarios=$query->fetchAll();
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getUnUsuario";
+        }
+        if (empty($tUsuarios)){
+            $u=false;
+        }
+        else{
+            $u=true;
+        }
+        return $u;
+    }
+
     public function getLoginPassword($username, $password)
     {
         try {
