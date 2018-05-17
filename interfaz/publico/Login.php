@@ -16,8 +16,9 @@ require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
+$direccion = $ROOT.'index';
 if(!empty($_SESSION)){
-    $direccion = $ROOT.'index';
+
     header('Location: '.$direccion);
 }
 

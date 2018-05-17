@@ -15,14 +15,14 @@ require_once '../../objetos/Acceso.php';
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
 
-$direccion = $ROOT.'index';
-
 var_dump($_SESSION);
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
+
+$direccion = $ROOT.'index';
 if(!empty($_SESSION)){
     header('Location: '.$direccion);
 }
@@ -30,14 +30,27 @@ if(!empty($_SESSION)){
 include '../templates/Template.php';
 $template = new Template($ROOT);
 
-if ($_POST['submit'] === 'singup') {
+if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['pass'];
     $name = $_POST['name'];
     $lastName = $_POST['lastname'];
     $birthDate = $_POST['birthdate'];
-    $imageProfile = $_POST['profileimage'];
+    $imageProfile = "";
+
+
+    if (!empty($_FILES['imagefile']['name'])){
+        var_dump($_FILES);
+        $nombreOriginal=$_FILES['imagefile']['name'];
+        $posPunto=strpos($nombreOriginal,".")+1;
+        $extensionOriginal=  substr($nombreOriginal, $posPunto, 3);
+        //echo "La extensión es: $extensionOriginal";
+        $nuevaRuta = "../profile_images/profile_" . $username . "." . $extensionOriginal;
+        echo "El nuevo nombre es: $nuevaRuta";
+        move_uploaded_file($_FILES['imagefile']['tmp_name'], $nuevaRuta);
+        $imageProfile = $username. '.' . $extensionOriginal;
+    }
 
     $usuarioDao = UsuarioDAO::singletonUsuario();
     $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile, new Acceso(null, $password, date('Y/m/d h:i:s', time()) , 1));
@@ -52,8 +65,6 @@ if ($_POST['submit'] === 'singup') {
 
         header('Location: ' .$direccion);
     }
-
-
 
 }
 ?>
@@ -90,7 +101,7 @@ if ($_POST['submit'] === 'singup') {
 <div class="columnaMain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
-            <form method="post" action="Singup" name="singup">
+            <form method="post" action="Singup" name="singup" enctype="multipart/form-data">
             <div class="columnaMainLeft">
                 <label  for="user_singup" class="text-lighten-2 col s4"><h6><strong id="user_singup_label">Username</strong></h6></label>
                 <input id="user_singup" type="text" name="username" required/><br/>
@@ -100,7 +111,7 @@ if ($_POST['submit'] === 'singup') {
                 <input id="pass_singup" type="password" name="pass" required/><br/>
                 <pre><label for="pass2_singup" class="text-lighten-2 col s4"><h6><strong id="pass2_singup_label">Repeat Password</strong></h6></label></pre>
                 <input id="pass2_singup" type="password" name="password2" required/><br/>
-                <div class="right-align"><button class="btn-large waves-effect waves-light right-aligned" id="submit_singup" type="submit" name="submit" value="singup" onclick="cifrar()" disabled>Login</button></div>
+                <div class="right-align"><button class="btn-large waves-effect waves-light right-aligned" id="submit_singup" type="submit" name="submit" value="singup" onclick="cifrar()" disabled>Sing Up</button></div>
             </div>
             <div class="columnaMainRight">
                 <label for="name_singup" class="text-lighten-2 col s4"><h6><strong>Name</strong></h6></label>
@@ -112,7 +123,7 @@ if ($_POST['submit'] === 'singup') {
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>Profile image</span>
-                        <input type="file">
+                        <input type="file" name="imagefile" id="id_image">
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" id="image_singup" name="profileimage">

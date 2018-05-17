@@ -94,7 +94,26 @@ class UsuarioDAO
             $query->execute();
             $tUsuarios=$query->fetchAll();
         } catch (Exception $ex) {
-            echo "Se ha producido un error en getUnUsuario";
+            echo "Se ha producido un error en get UsuarioExiste";
+        }
+        if (empty($tUsuarios)){
+            $u=false;
+        }
+        else{
+            $u=true;
+        }
+        return $u;
+    }
+
+    public function getEmailExiste($parametro)
+    {
+        try {
+            $consulta="SELECT email FROM usuarios WHERE email='" .$parametro."'";
+            $query=$this->db->preparar($consulta);
+            $query->execute();
+            $tUsuarios=$query->fetchAll();
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getEmailExiste";
         }
         if (empty($tUsuarios)){
             $u=false;
@@ -156,7 +175,6 @@ class UsuarioDAO
             @$query->bindParam(6,$u->getProfileImage());
 
             $query->execute();
-
             try {
                 $consulta="SELECT id FROM usuarios WHERE username='". $u->getUsername() ."'";
                 $query=$this->db->preparar($consulta);
@@ -181,9 +199,9 @@ class UsuarioDAO
         } catch (Exception $ex) {
             $insertado=false;
         }
-        var_dump($insertado);
         return  $insertado;
     }
+
     /*
     public function bajaUsuario($idUsuario)
     {

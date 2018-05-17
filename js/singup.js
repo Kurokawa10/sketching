@@ -9,10 +9,9 @@ $(function(){
 
     $('#user_singup').on('blur', function() {
 
-        $.ajax({type: "GET", url: "/sketching/persistencia/getUserRegistrado?nameUser="+ $('#user_singup').val(),
+        $.ajax({type: "GET", url: "/sketching/persistencia/getUserRegistrado?nameUser=" + $('#user_singup').val(),
             success: function(response) {
-                //$('#user_singup_label').text('ACIERTO ' + userReg);
-                if (response.toString().indexOf('true') !== -1) {
+                if (response.indexOf('true') !== -1) {
                     $('#user_singup_label').text('Username there is already a user with the same name!').css("color", "red");
                     bolUser = false;
                 }else{
@@ -26,20 +25,29 @@ $(function(){
         });
         valirForm();
     });
-    //EL CORREO TAMPOCO SE PUEDE REPETIR, CAMBIA ESO
+
     $('#email_singup').on('blur', function() {
-        if($('#email_singup').val().indexOf('@', 0) === -1 || $('#email_singup').val().indexOf('.', 0) === -1){
-            $('#email_singup_label').text('E-mail Invalid!').css("color", "red");
-            bolEmail = false;
-        }else{
-            $('#email_singup_label').text('E-mail').css("color", "#9e9e9e");
-            bolEmail = true;
-        }
+
+        $.ajax({type: "GET", url: "/sketching/persistencia/getEmailRegistrado?email=" + $('#email_singup').val(),
+            success: function (response) {
+                if(( response.indexOf('true') !== -1 ) || ( $('#email_singup').val().indexOf('@', 0) === -1 || $('#email_singup').val().indexOf('.', 0) === -1) ){
+                    $('#email_singup_label').text('E-mail Invalid!').css("color", "red");
+                    bolEmail = false;
+                }else{
+                    $('#email_singup_label').text('E-mail Valid!').css("color", "green");
+                    bolEmail = true;
+                }
+            },
+            error: function (response) {
+
+            }
+        });
+
         valirForm();
     });
 
     $('#pass_singup').on('blur', function() {
-        if($('#pass_singup').val() === $('#pass2_singup').val()){
+        if($('#pass_singup').val() === $('#pass2_singup').val() && $('#pass_singup').val().length !== 0 ){
             $('#pass2_singup_label').text('Password Match!').css("color", "green");
             bolPass = true;
         }else{
@@ -50,7 +58,7 @@ $(function(){
     });
 
     $('#pass2_singup').on('blur', function() {
-        if($('#pass_singup').val() === $('#pass2_singup').val()){
+        if($('#pass_singup').val() === $('#pass2_singup').val() && $('#pass2_singup').val().length !== 0){
             $('#pass2_singup_label').text('Password Match!').css("color", "green");
             bolPass = true;
         }else{

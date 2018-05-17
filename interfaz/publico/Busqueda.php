@@ -6,21 +6,23 @@
  * Time: 17:01
  */
 
+session_start();
 include_once '../templates/Template.php';
 include_once '../../objetos/Usuario.php';
 include_once '../../persistencia/UsuarioDAO.php';
 
+//$ROOT = '/~robertogarcia/';
+$ROOT = '/sketching/';
 
-if(!isset($_SESSION)){
+if(empty($_SESSION)){
     //Elementos Logged out
-    $profileImage = null;
+    $profImageURL = null;
 }else{
     //Elementos logged in
-
     $profileImage = $_SESSION['profileImage'];
+    $profImageURL = 'interfaz/profile_images/profile_'.$profileImage;
 }
-
-$template = new Template();
+$template = new Template($ROOT);
 
 ?>
 <!DOCTYPE html>
@@ -39,16 +41,18 @@ $template = new Template();
     <link type="text/css" rel="stylesheet" href="../../css/materialize.min.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/menu.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-<?php echo $template->navBar($profileImage); ?>
-<div class="columnaMenu" id="index-menu">
+<?php echo $template->navBar($profImageURL); ?>
+<div class="columnaMenu" id="colmenu">
     <?php echo $template->menu(); ?>
 </div>
-<div class="columnaMain">
+<div class="columnaMain" id="colmain">
     <?php
 
     if(isset($_GET['search'])){
@@ -56,7 +60,7 @@ $template = new Template();
         $usuarioDao = UsuarioDAO::singletonUsuario();
         $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
         if(count($listaUsuarios) === 0){
-            echo'<p><h4>Busquera erronea: Usuario no encontrado</h4></p>';
+            echo'<p><h4 class="center">Busquera erronea: Usuario no encontrado</h4></p>';
         }else if(count($listaUsuarios) === 1){
             //Hacer que si solo encuentre a uno lo mande directamente a su perfil
         }
@@ -65,26 +69,34 @@ $template = new Template();
         <table class="striped responsive-table">
             <thead>
             <tr>
-                <th>Autor</th>
-                <th></th>
-                <th>estilo</th>
+                <th class="center">Autor</th>
+                <th class="center"></th>
+                <th class="center">estilo</th>
             </tr>
             </thead>
 
             <tbody>
             <?php foreach ($listaUsuarios as $valor){
-                echo '<tr><td>
-                    <div class="row valign-wrapper">
-                        <div class="col s2">
-                            <img src="'. $valor->getProfileImage().'" alt="" class="circle responsive-img">
+                echo '<tr>
+                    <td class="col s1" width="16%">
+                        <a href="'. $ROOT. $valor->getUsername() .'">
+                        <div class="row valign-wrapper">
+                            <div class="s1">
+                                <img src="../../interfaz/profile_images/profile_'. $valor->getProfileImage().'" alt="" class="circle" height="80px" width="80px">
+                            </div>
                         </div>
-                        <div class="col s10">
-                            <span class="black-text">
-                               '. $valor->getUsername() .'
-                            </span>
-                        </div>
-                    </div>
-          </td></tr> ';
+                        </a>
+                    </td>
+                    <td class="left-align">
+                    <a href="'. $ROOT. $valor->getUsername() .'">
+                        <div class="row valign-wrapper">
+                            <div class="col s10">
+                                <span class="black-text">'. $valor->getUsername() .'</span>
+                            </div>
+                        </div>    
+                        </a>     
+                    </td>
+          </tr>';
             } ?>
             </tbody>
         </table>

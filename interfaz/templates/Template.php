@@ -16,6 +16,9 @@ class template
     }
 
     public function navBar($profileImage){
+        if($profileImage === 'interfaz/profile_images/profile_'){
+            $profileImage =  $this->ROOT. "interfaz/app_images/profile-alt.png";
+        }
         $html = '<nav id="naveBar" class="light-blue lighten-1" role="navigation">
         <a id="logo-container" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
         <div class="nav-wrapper container">
@@ -37,7 +40,7 @@ class template
                     $html .= '<li>
                                 <div class="row valign-wrapper">
                                     <div class="col">
-                                      <img src="'.$profileImage.'" alt="" class="circle responsive-img" height="60" width="60">
+                                      <img src="'.$profileImage.'" alt="" class="circle yellow" height="60px" width="60px">
                                     </div>
                                     <div class="col s5">
                                       <span class="black-text">
@@ -100,7 +103,7 @@ class template
             <div class="row">
               <div class="col l4 s4">
                 <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                <p class="grey-text text-lighten-4">Final project for Cross-platform Apps development.</p>
               </div>
               <div class="col l4 offset-l1 s4">
                 <h5 class="white-text">Links</h5>
