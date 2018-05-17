@@ -139,7 +139,6 @@ class UsuarioDAO
 
             }
         }
-        var_dump($u);
         return $u;
     }
 
@@ -148,14 +147,13 @@ class UsuarioDAO
     {
         try {
             $consulta="INSERT INTO usuarios (id, username, email, nombre, apellido, birth_date, profile_image) values (null,?,?,?,?,?,?)";
-
             $query=$this->db->preparar($consulta);
-            $query->bindParam(1,$u->getUsername());
-            $query->bindParam(2,$u->getEmail());
-            $query->bindParam(3,$u->getNombre());
-            $query->bindParam(4,$u->getAppelido());
-            $query->bindParam(5,$u->getBirthDate());
-            $query->bindParam(5,$u->getProfileImage());
+            @$query->bindParam(1,$u->getUsername());
+            @$query->bindParam(2,$u->getEmail());
+            @$query->bindParam(3,$u->getNombre());
+            @$query->bindParam(4,$u->getAppelido());
+            @$query->bindParam(5,$u->getBirthDate());
+            @$query->bindParam(6,$u->getProfileImage());
 
             $query->execute();
 
@@ -165,18 +163,16 @@ class UsuarioDAO
                 $query->execute();
                 $idUser = $query->fetchAll();
 
-
                 $consulta="INSERT INTO acceso (id_usuario,password,ultimo_acceso,rol) values (?,?,?,?)";
 
                 $query=$this->db->preparar($consulta);
-                $query->bindParam(1,$idUser);
-                $query->bindParam(2,$u->getAcceso()->getPassword());
-                $query->bindParam(3,$u->getAcceso()->getUltimoAcceso());
-                $query->bindParam(4,$u->getAcceso()->getRol());
+                @$query->bindParam(1,$idUser[0][0]);
+                @$query->bindParam(2,$u->getAcceso()->getPassword());
+                @$query->bindParam(3,$u->getAcceso()->getUltimoAcceso());
+                @$query->bindParam(4,$u->getAcceso()->getRol());
 
                 $query->execute();
                 $insertado=true;
-
 
             } catch (Exception $ex) {
                 $insertado=false;
@@ -185,6 +181,7 @@ class UsuarioDAO
         } catch (Exception $ex) {
             $insertado=false;
         }
+        var_dump($insertado);
         return  $insertado;
     }
     /*

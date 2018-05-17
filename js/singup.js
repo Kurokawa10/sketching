@@ -91,12 +91,4 @@ $(function(){
         }
     }
 
-    /*$('#form_singup').on('focusout', function () {
-        if(bolUser && bolEmail && bolPass && bolBirth){
-            $('#submit_singup').prop("disabled",false);
-        }else{
-            $('#submit_singup').prop("disabled",true);
-        }
-    });*/
-
 })(jQuery); // end of jQuery name space

@@ -7,8 +7,15 @@
  */
 
 session_start();
+
+require_once '../../persistencia/UsuarioDAO.php';
+require_once '../../objetos/Usuario.php';
+require_once '../../objetos/Acceso.php';
+
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
+
+$direccion = $ROOT.'index';
 
 var_dump($_SESSION);
 
@@ -17,35 +24,35 @@ require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
 if(!empty($_SESSION)){
-    $direccion = $ROOT.'index';
     header('Location: '.$direccion);
 }
 
 include '../templates/Template.php';
 $template = new Template($ROOT);
 
-if (isset($_POST['submit'])) {
-    /*$username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_POST['submit'] === 'singup') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['pass'];
+    $name = $_POST['name'];
+    $lastName = $_POST['lastname'];
+    $birthDate = $_POST['birthdate'];
+    $imageProfile = $_POST['profileimage'];
 
-    echo "El login introducido es: $username<br>";
-    echo "El password encriptado es: $password<br>";
-    if (isset($username) && isset($password)) {
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile, new Acceso(null, $password, date('Y/m/d h:i:s', time()) , 1));
+    $usuarioDao->altaUsuario($user);
+    $u = $usuarioDao->getLoginPassword($username, $password);
+    if (!is_null($u)) {
+        //Guardar datos de este usuario en la sessión
+        $_SESSION['username'] = $u->getUsername();
+        $_SESSION['profileImage'] = $u->getProfileImage();
+        $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
+        $_SESSION['rol'] = $u->getAcceso()->getRol();
 
-        $usuarioDao = UsuarioDAO::singletonUsuario();
-        $u = $usuarioDao->getLoginPassword($username, $password);
-        if (!is_null($u)) {
-            //Guardar datos de este usuario en la sessión
-            $_SESSION['username'] = $u->getUsername();
-            $_SESSION['profileImage'] = $u->getProfileImage();
-            $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
-            $_SESSION['rol'] = $u->getAcceso()->getRol();
+        header('Location: ' .$direccion);
+    }
 
-            header('Location: /sketching/index');
-        }else {
-            header('Location: login?identificado=1');
-        }
-    }*/
 
 
 }
@@ -83,17 +90,7 @@ if (isset($_POST['submit'])) {
 <div class="columnaMain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
-            <?php
-            if (isset($_GET['identificado']))
-                if ($_GET['identificado'] == 1) {
-                    ?>
-                    <span class="center-block red-text">
-                            <b>Fallo de autenticación.Intentelo de nuevo</b>
-                        </span>
-                    <?php
-                }
-            ?>
-            <form method="post" action="Singup" id="form_singup" name="singup">
+            <form method="post" action="Singup" name="singup">
             <div class="columnaMainLeft">
                 <label  for="user_singup" class="text-lighten-2 col s4"><h6><strong id="user_singup_label">Username</strong></h6></label>
                 <input id="user_singup" type="text" name="username" required/><br/>
@@ -133,8 +130,10 @@ if (isset($_POST['submit'])) {
 <script src="../../js/sha256.js"></script>
 <script>
     function cifrar(){
-        let input_pass = document.getElementById("pass");
+        let input_pass = document.getElementById("pass_singup");
         input_pass.value = sha256(input_pass.value);
+        let input_pass2 = document.getElementById("pass2_singup");
+        input_pass2.value = sha256(input_pass2.value);
     }
 </script>
 </body>
