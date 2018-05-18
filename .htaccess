@@ -4,7 +4,7 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 
-FallbackResource /sketching/index.php
+FallbackResource /~robertogarcia/index.php
 #Options -Indexes
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php
