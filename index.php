@@ -5,7 +5,13 @@
 * Date: 12/05/2018
 * Time: 0:56
 */
+
 session_start();
+
+include_once 'persistencia/UsuarioDAO.php';
+include_once 'objetos/Usuario.php';
+include_once 'interfaz/templates/Funciones.php';
+
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
 
@@ -14,13 +20,21 @@ $elements = explode('/', $path);                // Split path on slashes
 if(empty($elements[0])) {                       // No path elements means home
 
 } else{
-    echo 'HOLA: ';
-    var_dump($elements);
     array_shift($elements);
+    //var_dump($elements);
     if(count($elements) >= 2){
         header('Location: '. $ROOT .'index');
     }else{
-        #Redirigir al perfil publico del usuario.
+        if(empty($elements[0]) || $elements[0] === 'index'){
+            //pagina principal
+        }else{
+            $userSelec = $elements[0];
+            $usuarioDao = UsuarioDAO::singletonUsuario();
+            $autor = $usuarioDao->getUserbyName($userSelec);
+            if(empty($autor)){
+                header('Location: '. $ROOT .'interfaz/publico/Busqueda.php');
+            }
+        }
     }
 }
 
@@ -29,7 +43,7 @@ if(isset($_POST['logout'])){
     session_start();
 }
 
-var_dump($_SESSION);
+//var_dump($_SESSION);
 
 if(empty($_SESSION)){
     //Elementos Logged out
@@ -69,22 +83,38 @@ $template = new Template($ROOT);
 </head>
 
 <body>
-    <?php echo $template->navBar($profImageURL);?>
+    <?php echo $template->navBar($profImageURL); ?>
     <div class="columnaMenu" id="colmenu" >
-        <?php echo $template->menu();?>
+        <?php echo $template->menu(); ?>
     </div>
     <div class="columnaMain" id="colmain">
+        <?php if(empty($autor)){
+            echo $template->indexDefault();
+        }else{ ?>
         <div class="section no-pad-bot" id="index-banner">
             <div class="container light-green lighten-4">
-                <div class="columnaMainLeft" style="margin: auto">
+                <div class="columnaPostLeft">
                     <img class="responsive-img" src="interfaz/app_images/logo.png">
                 </div>
-                <div class="columnaMainRight">
-                    <h1>BIENVENIDO</h1>
+                <div class="columnaPostRight">
+                    <div class="card-panel grey lighten-5 z-depth-1 col s12">
+                      <div class="row valign-wrapper">
+                        <div class="col s2">
+                          <img class="circle" src="<?php echo Funciones::showImageProfile('interfaz/profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+                        </div>
+                        <div class="col s10">
+                          <span class="black-text">
+                              kurokawa
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
+         <?php } ?>
     </div>
-    <?php echo $template->footer();?>
+    <?php echo $template->footer(); ?>
 </body>
 </html>
+

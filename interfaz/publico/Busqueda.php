@@ -59,10 +59,12 @@ $template = new Template($ROOT);
         $busqueda = $_GET['search'];
         $usuarioDao = UsuarioDAO::singletonUsuario();
         $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
-        if(count($listaUsuarios) === 0){
+        //var_dump($listaUsuarios);
+        if(empty($listaUsuarios)){
             echo'<p><h4 class="center">Busquera erronea: Usuario no encontrado</h4></p>';
-        }else if(count($listaUsuarios) === 1){
-            //Hacer que si solo encuentre a uno lo mande directamente a su perfil
+        }else{
+        if(count($listaUsuarios) === 1){
+            header('Location: '. $ROOT .$listaUsuarios[0]->getUsername());
         }
         else{
         ?>
@@ -100,7 +102,7 @@ $template = new Template($ROOT);
             } ?>
             </tbody>
         </table>
-        <?php }
+    <?php } }
     }else{
         ?>
         <p><h4>Busquera erronea: Campo vacio</h4></p>

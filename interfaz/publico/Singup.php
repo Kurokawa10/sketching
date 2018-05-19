@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
 <div class="columnaMenu" id="colmenu">
     <?php echo $template->menu();?>
 </div>
-<div class="columnaMain">
+<div class="columnaMain" id="colmain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
             <form method="post" action="Singup" name="singup" enctype="multipart/form-data">

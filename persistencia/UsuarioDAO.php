@@ -65,6 +65,26 @@ class UsuarioDAO
         }
         return $arrayUsuarios;
     }
+    
+    public function getUserByName($userName)
+    {
+        try {
+            $consulta="SELECT * FROM usuarios WHERE username='" .$userName ."'";
+            $query=$this->db->preparar($consulta);
+            $query->execute();
+            $tUsuarios=$query->fetchAll();
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getUnUsuario";
+        }
+        if (empty($tUsuarios)){
+            $u=null;
+        }
+        else{
+
+            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], null);
+        }
+        return $u;
+    }
 
     public function getUsuario($numUsuario)
     {

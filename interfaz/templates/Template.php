@@ -6,6 +6,8 @@
  * Time: 16:05
  */
 
+include_once 'Funciones.php';
+
 class template
 {
     private $ROOT;
@@ -16,9 +18,6 @@ class template
     }
 
     public function navBar($profileImage){
-        if($profileImage === 'interfaz/profile_images/profile_'){
-            $profileImage =  $this->ROOT. "interfaz/app_images/profile-alt.png";
-        }
         $html = '<nav id="naveBar" class="light-blue lighten-1" role="navigation">
         <a id="logo-container" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
         <div class="nav-wrapper container">
@@ -40,7 +39,7 @@ class template
                     $html .= '<li>
                                 <div class="row valign-wrapper">
                                     <div class="col">
-                                      <img src="'.$profileImage.'" alt="" class="circle yellow" height="60px" width="60px">
+                                      <img src="'. Funciones::showImageProfile($profileImage) .'" alt="" class="circle yellow" height="60px" width="60px">
                                     </div>
                                     <div class="col s5">
                                       <span class="black-text">
@@ -67,32 +66,51 @@ class template
     }
 
     public function menu(){
-        return '
+        $html = '
     <div id="menu-oculto" style="display:none"><a><i class="small material-icons">menu</i></a></div>
     <div id="index-menu">
     <header id="menu" class="light-blue lighten-1">
         <ul class="menu">
-            <li><a><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navegar<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
+            <li><a><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navigate<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
                 <ul class="submenu">
-                    <li><a href="#">Galerias<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
-                    <li><a href="#">Artistas</a></li>
-                    <li><a href="#"></a></li>
-                    <li><a href="#">Grupo<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
-                    <li><a href="#">item 5</a></li>
-                    <li><a href="#">item 6</a></li>
-                    <li><a href="#">item 7</a></li>
-                    <li><a href="#">item 8</a></li>
-                    <li><a href="#">item 9</a></li>
-                    <li><a href="#">item 10 largo </a></li>
+                    <li><a href="#">Search<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
+                    <li><a href="#">Categories</a>
+                    <ul class="submenu">
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                        <li><a href="#">Categories</a>
+                    </ul>
+                    </li>
+                    
                 </ul>
             </li>
         </ul>
     </header>
     </div>
-<script type="text/javascript" src="'. $this->ROOT .'js/materialize.min.js"></script>';
+    <script type="text/javascript" src="'. $this->ROOT .'js/materialize.min.js"></script>';
+        
+    return $html; 
     }
 
-
+    public function indexDefault(){
+     
+        $html = '<div class="section no-pad-bot" id="index-banner">
+            <div class="container light-green lighten-4">
+                <div class="columnaMainLeft" style="margin: auto">
+                    <img class="responsive-img" src="interfaz/app_images/logo.png">
+                </div>
+                <div class="columnaMainRight">
+                    <h1>BIENVENIDO</h1>
+                </div>
+            </div>
+        </div>';
+        
+        return $html;
+    }
 
     public function footer(){
         return '
