@@ -10,105 +10,65 @@ class Galeria
 {
     private $id;
     private $nombre;
+    private $descripcion;
     private $autor;
     private $fechaCreacion;
     private $visitas;
 
-    /**
-     * Galeria constructor.
-     * @param $id
-     * @param $nombre
-     * @param $autor
-     * @param $fechaCreacion
-     * @param $visitas
-     */
-    public function __construct($id, $nombre, $autor, $fechaCreacion, $visitas)
-    {
+    function __construct($id, $nombre, $descripcion, $autor, $fechaCreacion, $visitas) {
         $this->id = $id;
         $this->nombre = $nombre;
+        $this->descripcion = $descripcion;
         $this->autor = $autor;
         $this->fechaCreacion = $fechaCreacion;
         $this->visitas = $visitas;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
+    function getId() {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNombre()
-    {
+    function getNombre() {
         return $this->nombre;
     }
 
-    /**
-     * @param mixed $nombre
-     */
-    public function setNombre($nombre): void
-    {
-        $this->nombre = $nombre;
+    function getDescripcion() {
+        return $this->descripcion;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAutor()
-    {
+    function getAutor() {
         return $this->autor;
     }
 
-    /**
-     * @param mixed $autor
-     */
-    public function setAutor($autor): void
-    {
-        $this->autor = $autor;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFechaCreacion()
-    {
+    function getFechaCreacion() {
         return $this->fechaCreacion;
     }
 
-    /**
-     * @param mixed $fechaCreacion
-     */
-    public function setFechaCreacion($fechaCreacion): void
-    {
-        $this->fechaCreacion = $fechaCreacion;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVisitas()
-    {
+    function getVisitas() {
         return $this->visitas;
     }
 
-    /**
-     * @param mixed $visitas
-     */
-    public function setVisitas($visitas): void
-    {
-        $this->visitas = $visitas;
+    function setId($id) {
+        $this->id = $id;
     }
 
+    function setNombre($nombre) {
+        $this->nombre = $nombre;
+    }
+
+    function setDescripcion($descripcion) {
+        $this->descripcion = $descripcion;
+    }
+
+    function setAutor($autor) {
+        $this->autor = $autor;
+    }
+
+    function setFechaCreacion($fechaCreacion) {
+        $this->fechaCreacion = $fechaCreacion;
+    }
+
+    function setVisitas($visitas) {
+        $this->visitas = $visitas;
+    }
 }

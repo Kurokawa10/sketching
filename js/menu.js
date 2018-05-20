@@ -1,5 +1,3 @@
-
-
 $(function(){
     $('#menu-oculto').on("click", function() {
         $(this).hide();
@@ -13,6 +11,5 @@ $(function(){
         $('#index-menu').hide();
         $('#colmenu').height('0%').width('90%');
         $('#menu-oculto').show().css({"padding-top":"10px","padding-left":"10px"});
-
     });// end of document ready
 })(jQuery); // end of jQuery name space

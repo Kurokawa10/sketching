@@ -11,6 +11,8 @@ session_start();
 include_once 'persistencia/UsuarioDAO.php';
 include_once 'objetos/Usuario.php';
 include_once 'interfaz/templates/Funciones.php';
+include_once 'persistencia/GaleriaDAO.php';
+include_once 'objetos/Galeria.php';
 
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
@@ -75,9 +77,10 @@ $template = new Template($ROOT);
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     
-    <script type="text/javascript" rel="script" src="js/init.js"></script>
     <script type="text/javascript" rel="script" src="js/materialize.js"></script>
     <script type="text/javascript" rel="script" src="js/menu.js"></script>
+    <script type="text/javascript" rel="script" src="js/infinitescroll.js"></script>
+    <script type="text/javascript" rel="script" src="js/init.js"></script>
 
 
 
@@ -92,24 +95,29 @@ $template = new Template($ROOT);
     <div class="columnaMain" id="colmain">
         <?php if(empty($autor)){
             echo $template->indexDefault();
-        }else{ ?>
+        }else{
+            $galeriaDao = GaleriaDAO::singletonGaleria();
+            $galerias1 = $galeriaDao->getUltGaleriasByUser($autor->getId());
+            ?>
         <div class="columnaPostLeft">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card large">
-                        <div class="card-image">
-                            <img class="responsive-img" src="interfaz/app_images/logo.png">
-                            <span class="card-title">Card Title</span>
-                        </div>
-                        <div class="card-content">
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#">This is a link</a>
+            <div class="row" id="alldata">
+            <?php foreach ($galerias1 as $value) { ?>
+                <div class="vikash" id="<?php echo $value->getId(); ?>">
+                    <div class="col s12">
+                        <div class="card large">
+                            <div class="card-image">
+                                <a href="#">
+                                <img class="responsive-img" src="interfaz/app_images/logo.png">
+                                <span class="card-title"><?php echo $value->getNombre(); ?></span>
+                                </a>
+                            </div>
+                            <div class="card-content">
+                                <p><?php echo $value->getDescripcion(); ?></p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            <?php } ?> 
             </div>
         </div>
         <div class="columnaPostRight">
@@ -154,10 +162,23 @@ $template = new Template($ROOT);
                     </ul>
                 </div>
                 <div class="card-content grey lighten-4">
-                    <!-- FORMULARIO -->
-                    <div id="tab1">Access to new content each month</div>
-                    <div id="tab2">Access to my WIP</div>
-                    <div id="tab3">Access to Exclusive content</div>
+                    <form name="formSubscribe" action="interfaz/privado/Subscribe" method="POST" enctype="multipart/form-data">
+                        <div id="tab1">
+                            <p>Access to new content each month</p>
+                            <br>
+                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="1">Subscribe for 1€/month</button>
+                        </div>
+                        <div id="tab2">
+                            <p>Access to my WIP</p>
+                            <br>
+                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="3">Subscribe for 3€/month</button>
+                        </div>
+                        <div id="tab3">
+                            <p>Access to Exclusive content</p>
+                            <br>
+                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="5">Subscribe for 5€/month</button>
+                        </div>
+                    <form>
                 </div>
             </div>
         </div>

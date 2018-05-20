@@ -1,5 +1,3 @@
-
-
 $(function(){
 
     let bolUser = false;
@@ -98,5 +96,4 @@ $(function(){
             $('#submit_singup').prop("disabled",true);
         }
     }
-
 })(jQuery); // end of jQuery name space
