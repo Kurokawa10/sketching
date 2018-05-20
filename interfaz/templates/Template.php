@@ -17,9 +17,14 @@ class template
         $this->ROOT = $ROOT;
     }
 
+    /**
+     * 
+     * @param type $profileImage
+     * @return string
+     */
     public function navBar($profileImage){
         $html = '<nav id="naveBar" class="light-blue lighten-1" role="navigation">
-        <a id="logo-container" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
+        <a style="height:60px;" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
         <div class="nav-wrapper container">
             <ul class="right hide-on-med-and-down">
                 <li>

@@ -5095,7 +5095,7 @@ small {
 
 .tabs .tab a:hover, .tabs .tab a.active {
   background-color: transparent;
-  color: #ee6e73;
+  color: #607d8b;
 }
 
 .tabs .tab.disabled a,
@@ -7498,13 +7498,13 @@ input[type=range].focused:focus:not(.active)::-ms-thumb {
 .table-of-contents a:hover {
   color: #a8a8a8;
   padding-left: 15px;
-  border-left: 1px solid #ee6e73;
+  border-left: 1px solid #607d8b;
 }
 
 .table-of-contents a.active {
   font-weight: 500;
   padding-left: 14px;
-  border-left: 2px solid #ee6e73;
+  border-left: 2px solid #607d8b;
 }
 
 .sidenav {

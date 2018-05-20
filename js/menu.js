@@ -12,7 +12,7 @@ $(function(){
         $('.columnaMain').width('87%');
         $('#index-menu').hide();
         $('#colmenu').height('0%').width('90%');
-        $('#menu-oculto').show().paddingLeft('10px');
+        $('#menu-oculto').show().css({"padding-top":"10px","padding-left":"10px"});
 
     });// end of document ready
 })(jQuery); // end of jQuery name space

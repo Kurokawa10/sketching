@@ -11,7 +11,7 @@
 
 .columnaMain{
     padding: 5px;
-    margin: 20px;
+    margin: 10px;
     float: left;
     width: 82%;
     text-align: justify;
@@ -39,7 +39,7 @@
     padding: 10px;
     margin: auto;
     float: left;
-    width: 77%;
+    width: 66%;
     align-content: center;
     text-align: justify;
 }
@@ -48,7 +48,7 @@
     padding: 10px;
     margin: auto;
     float: right;
-    width: 17%;
+    width: 33%;
     align-content: center;
     text-align: justify;
 }

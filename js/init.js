@@ -1,7 +1,10 @@
 (function($){
-  $(function(){
-
-    $('.sidenav').sidenav();
-
-  }); // end of document ready
+    
+    $(function(){
+        $('.tabs').tabs();
+    });
+    
+    $(function(){
+        $('.sidenav').sidenav();
+    }); // end of document ready
 })(jQuery); // end of jQuery name space

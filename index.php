@@ -74,6 +74,8 @@ $template = new Template($ROOT);
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    
+    <script type="text/javascript" rel="script" src="js/init.js"></script>
     <script type="text/javascript" rel="script" src="js/materialize.js"></script>
     <script type="text/javascript" rel="script" src="js/menu.js"></script>
 
@@ -91,24 +93,71 @@ $template = new Template($ROOT);
         <?php if(empty($autor)){
             echo $template->indexDefault();
         }else{ ?>
-        <div class="section no-pad-bot" id="index-banner">
-            <div class="container light-green lighten-4">
-                <div class="columnaPostLeft">
-                    <img class="responsive-img" src="interfaz/app_images/logo.png">
-                </div>
-                <div class="columnaPostRight">
-                    <div class="card-panel grey lighten-5 z-depth-1 col s12">
-                      <div class="row valign-wrapper">
-                        <div class="col s2">
-                          <img class="circle" src="<?php echo Funciones::showImageProfile('interfaz/profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+        <div class="columnaPostLeft">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card large">
+                        <div class="card-image">
+                            <img class="responsive-img" src="interfaz/app_images/logo.png">
+                            <span class="card-title">Card Title</span>
                         </div>
-                        <div class="col s10">
-                          <span class="black-text">
-                              kurokawa
-                          </span>
+                        <div class="card-content">
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
                         </div>
-                      </div>
+                        <div class="card-action">
+                            <a href="#">This is a link</a>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="columnaPostRight">
+            <div class="card-panel grey lighten-5 z-depth-1 col s12">
+                <div class="row valign-wrapper">
+                    <div class="col s4">
+                        <img class="circle" src="<?php echo Funciones::showImageProfile('interfaz/profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+                    </div>
+                    <div class="col s8">
+                        <span class="black-text">
+                            <h5>
+                                <b>
+                                    <?php echo $autor->getUsername(); ?>
+                                </b>
+                            </h5>
+                        </span>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <span class="black-text center-align">
+                        <p>
+                            <h6>
+                                <b>
+                                    <?php echo '666'; ?>
+                                </b>
+                                Followers
+                            </h6>
+                        </p>
+                        redes sociales
+                    </span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <p>Rewards</p>
+                </div>
+                <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a href="#tab1">1€ Reward</a></li>
+                        <li class="tab"><a class="active" href="#tab2">3€ Reward</a></li>
+                        <li class="tab"><a href="#tab3">5€ Reward</a></li>
+                    </ul>
+                </div>
+                <div class="card-content grey lighten-4">
+                    <!-- FORMULARIO -->
+                    <div id="tab1">Access to new content each month</div>
+                    <div id="tab2">Access to my WIP</div>
+                    <div id="tab3">Access to Exclusive content</div>
                 </div>
             </div>
         </div>
