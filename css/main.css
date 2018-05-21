@@ -63,3 +63,23 @@ div {
     margin: auto;
     display: block;
 }
+
+.relaxing-pink{
+    background-color: #edd1eb !important;
+}
+.relaxing-blue{
+    background-color: #d1ebed !important;
+}
+.relaxing-orange{
+    background-color: #edd3d1 !important;
+}
+.relaxing-green{
+    background-color: #d1edd3 !important;
+}
+.relaxing-grey{
+    background-color: #f4f7f6 !important;
+}
+.relaxing-red{
+     background-color: #c5180a !important;
+ }
+

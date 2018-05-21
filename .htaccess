@@ -1,13 +1,12 @@
 
-#DirectoryIndex /sketching/index.php
 # Run Php without filename extension
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
-
-FallbackResource /sketching/index.php
-#Options -Indexes
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php
+
+FallbackResource /sketching/index.php
+#FallbackResource /~robertogarcia/index.php
 
 # Return 404 if original request is .php
 RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"

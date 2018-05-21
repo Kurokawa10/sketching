@@ -61,7 +61,7 @@ $template = new Template($ROOT);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Sketching</title>
@@ -108,13 +108,16 @@ $template = new Template($ROOT);
                     <div class="col s12">
                         <div class="card large">
                             <div class="card-image">
-                                <a href="#">
-                                <img class="responsive-img materialboxed" src="interfaz/galerias/<?php /*CAMBIAR ESTO A LA CLASE DE METODOS ESTATICOS*/ echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
-                                <span class="card-title"><strong><?php echo $value->getNombre(); ?></strong></span>
+                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                    <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
+                                    <span class="card-title"><strong><?php echo $value->getNombre(); ?></strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
-                                <h5><?php echo $value->getDescripcion(); ?></h5>
+                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                    <h5><?php echo $value->getDescripcion(); ?></h5>
+                                </a>
+                                <a style="float: right" href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId().'#disqus_thread'; ?>">comments</a>
                             </div>
                         </div>
                     </div>

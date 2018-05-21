@@ -15,7 +15,7 @@ require_once '../../objetos/Acceso.php';
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
 
-var_dump($_SESSION);
+//var_dump($_SESSION);
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';

@@ -22,6 +22,20 @@ if(empty($_SESSION)){
     $profileImage = $_SESSION['profileImage'];
     $profImageURL = 'interfaz/profile_images/profile_'.$profileImage;
 }
+
+if(isset($_GET['search'])){
+    $busqueda = $_GET['search'];
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
+    //var_dump($listaUsuarios);
+    if(empty($listaUsuarios)){
+        $notFound = true;
+    } else {
+        $notFound = false;
+        if (count($listaUsuarios) === 1) {
+            header('Location: ' . $ROOT . $listaUsuarios[0]->getUsername());
+        }
+    }
 $template = new Template($ROOT);
 
 ?>
@@ -54,19 +68,9 @@ $template = new Template($ROOT);
 </div>
 <div class="columnaMain" id="colmain">
     <?php
-
-    if(isset($_GET['search'])){
-        $busqueda = $_GET['search'];
-        $usuarioDao = UsuarioDAO::singletonUsuario();
-        $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
-        //var_dump($listaUsuarios);
-        if(empty($listaUsuarios)){
+        if($notFound){
             echo'<p><h4 class="center">Busquera erronea: Usuario no encontrado</h4></p>';
-        }else{
-        if(count($listaUsuarios) === 1){
-            header('Location: '. $ROOT .$listaUsuarios[0]->getUsername());
-        }
-        else{
+        } else {
         ?>
         <table class="striped responsive-table">
             <thead>
@@ -102,7 +106,7 @@ $template = new Template($ROOT);
             } ?>
             </tbody>
         </table>
-    <?php } }
+    <?php }
     }else{
         ?>
         <p><h4>Busquera erronea: Campo vacio</h4></p>

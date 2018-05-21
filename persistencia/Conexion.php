@@ -11,6 +11,10 @@ class Conexion {
             $database = "sketching";
             $usuario = "root";
             $password = "";
+            /*$host = "lampcastelar.homelinux.com:33069";
+            $database = "robertogarcia";
+            $usuario = "robertogarcia";
+            $password = "garcia11garcia";*/
 
             $this->dbh = new PDO("mysql:host=$host;dbname=$database", $usuario, $password);
             if ($this->dbh) {

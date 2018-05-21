@@ -50,16 +50,16 @@ header#menu .menu .icono.derecha{
     padding:0;
     list-style:none;
     font-size:18px;
-    background:#1a95d5;
+    background:#ffffff;
 }
 
 .menu li a{
     display: block;
     border-bottom: 1px solid rgba(0,0,0, 0.2);
     border-top: 1px solid rgba(255,255,255, 0.2);
-    background:#1a95d5;
+    background:#ffffff;
     text-decoration:none;
-    color:#FFF;
+    color:#808080;
     text-shadow: 1px 0px 1px rgba(0,0,0,0.2);
     filter: dropshadow(color=#000, offx=1, offy=0);
     padding:10px;
@@ -68,7 +68,7 @@ header#menu .menu .icono.derecha{
 
 .menu li ul li a, .submenu li ul li a{
     font-size:14px;
-    background:#4a6ba2;
+    background:#ffffff;
     text-shadow: 1px 0px 1px rgba(255,255,255,0.5);
 }
 
