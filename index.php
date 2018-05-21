@@ -73,7 +73,7 @@ $template = new Template($ROOT);
     <link href="css/main.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="css/estilo_menu.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     
@@ -100,24 +100,29 @@ $template = new Template($ROOT);
             $galerias1 = $galeriaDao->getUltGaleriasByUser($autor->getId());
             ?>
         <div class="columnaPostLeft">
+            <p hidden id="need" aria-valuenow="<?php echo $autor->getId(); ?>"></p>
             <div class="row" id="alldata">
-            <?php foreach ($galerias1 as $value) { ?>
+            <?php if(!empty($galerias1)){
+                foreach ($galerias1 as $value) { ?>
                 <div class="vikash" id="<?php echo $value->getId(); ?>">
                     <div class="col s12">
                         <div class="card large">
                             <div class="card-image">
                                 <a href="#">
-                                <img class="responsive-img" src="interfaz/app_images/logo.png">
-                                <span class="card-title"><?php echo $value->getNombre(); ?></span>
+                                <img class="responsive-img materialboxed" src="interfaz/galerias/<?php /*CAMBIAR ESTO A LA CLASE DE METODOS ESTATICOS*/ echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
+                                <span class="card-title"><strong><?php echo $value->getNombre(); ?></strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
-                                <p><?php echo $value->getDescripcion(); ?></p>
+                                <h5><?php echo $value->getDescripcion(); ?></h5>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php } ?> 
+            <?php }
+            }else{ ?>
+                <h5 class="center"><strong>Wow, looks like this Creator hasn´t upload any Gallery yet...</strong></h5>
+           <?php } ?>
             </div>
         </div>
         <div class="columnaPostRight">

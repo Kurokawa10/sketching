@@ -46,16 +46,19 @@ class GaleriaDAO
     public function getUltGaleriasByUser($userId)
     {
         try {
-            $consulta="SELECT * FROM galerias WHERE autor = " . $userId . " ORDER BY id DESC LIMIT 5" ;
-            $query=$this->db->preparar($consulta);
+            $consulta = "SELECT * FROM galeria WHERE autor = " . $userId . " ORDER BY id DESC LIMIT 5";
+            $query = $this->db->preparar($consulta);
             $query->execute();
-            $lGalerias=$query->fetchAll();
+            $lGalerias = $query->fetchAll();
 
         } catch (Exception $ex) {
             echo "Se ha producido un error en getUltGaleriasByUser";
         }
-        foreach ($lGalerias as $clave => $valor){
-            $arrayGalerias[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+
+        $arrayGalerias = null;
+
+        foreach ($lGalerias as $clave => $valor) {
+            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
         }
         return $arrayGalerias;
     }
@@ -63,7 +66,7 @@ class GaleriaDAO
     public function getLimGaleriasByUser($userId, $lim)
     {
         try {
-            $consulta="SELECT * FROM galerias WHERE autor = " . $userId . " AND id < $lim ORDER BY id DESC LIMIT 5" ;
+            $consulta="SELECT * FROM galeria WHERE autor = " . $userId . " AND id < $lim ORDER BY id DESC LIMIT 5" ;
             $query=$this->db->preparar($consulta);
             $query->execute();
             $lGalerias=$query->fetchAll();
@@ -71,8 +74,10 @@ class GaleriaDAO
         } catch (Exception $ex) {
             echo "Se ha producido un error en getLimGaleriasByUser";
         }
+        $arrayGalerias = null;
+
         foreach ($lGalerias as $clave => $valor){
-            $arrayGalerias[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
         }
         return $arrayGalerias;
     }

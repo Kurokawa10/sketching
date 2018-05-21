@@ -62,6 +62,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['profileImage'] = $u->getProfileImage();
         $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
         $_SESSION['rol'] = $u->getAcceso()->getRol();
+        mkdir('../galerias/'.$u->getUsername(), 700, true);
 
         header('Location: ' .$direccion);
     }
@@ -80,7 +81,7 @@ if (isset($_POST['submit'])) {
     <link href="../../css/main.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="../../css/estilo_menu.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link type="text/css" rel="stylesheet" href="../../css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="../../css/materialize.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://momentjs.com/downloads/moment.min.js"></script>

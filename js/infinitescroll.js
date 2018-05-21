@@ -5,7 +5,8 @@ $(function(){
             //scroll to returns 0
             if ($(window).scrollTop() + $(window).height() >= $(document).height())
             {
-                var ids = $('.vikash:last').attr("id");
+                let ids = $('.vikash:last').attr("id");
+                let autor = $('#need').attr("aria-valuenow");
                 //Hay que pasar el id del autor
                 $.ajax({
                     type: 'post',
@@ -13,7 +14,8 @@ $(function(){
                     url: 'persistencia/get_moredata',
                     cache: false,
                     data: {
-                        getdata: ids
+                        getdata: ids,
+                        autor: autor
                     },
                     success: function (response) {
                         //appending the result get_moredata page result with div id alldata

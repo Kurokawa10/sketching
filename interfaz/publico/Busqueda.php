@@ -38,7 +38,7 @@ $template = new Template($ROOT);
     <link href="../../css/main.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="../../css/estilo_menu.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link type="text/css" rel="stylesheet" href="../../css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="../../css/materialize.css"  media="screen,projection"/>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>

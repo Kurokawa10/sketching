@@ -1,18 +1,24 @@
 
 
 .columnaMenu{
+    margin-top: 65px;
     padding-right: 5px;
     padding-bottom: 5px;
     float: left;
     width: 14%;
     height: 100%;
     text-align: justify;
+    position: fixed;
 }
 
 .columnaMain{
+
     padding: 5px;
-    margin: 10px;
-    float: left;
+    margin-top: 70px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    float: right;
     width: 82%;
     text-align: justify;
     background-color: lightgray;

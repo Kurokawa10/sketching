@@ -23,7 +23,7 @@ class template
      * @return string
      */
     public function navBar($profileImage){
-        $html = '<nav id="naveBar" class="light-blue lighten-1" role="navigation">
+        $html = '<nav id="naveBar" class="light-blue lighten-1 navbar-fixed" role="navigation">
         <a style="height:60px;" href="'. $this->ROOT .'"index" class="brand-logo"><img src="'. $this->ROOT .'interfaz/app_images/icono.png" height="60" width="60"></a>
         <div class="nav-wrapper container">
             <ul class="right hide-on-med-and-down">
@@ -31,8 +31,10 @@ class template
                     <form method="get" name="search" action="'. $this->ROOT .'interfaz/publico/Busqueda">
                         <div class="row">
                         <div class="input-field col s10">
+                        <p>
                           <i class="material-icons prefix">search</i>
                           <input id="search" name="search" type="search" placeholder="Search" class="validate">
+                          </p>
                         </div>
                       </div>
                     </form>
@@ -59,12 +61,6 @@ class template
                 }
             $html .= '
             </ul>
-
-            <ul id="nav-mobile" class="sidenav">
-                <li><a href="#">Sing up</a></li>
-                <li><a href="#">Log in</a></li>
-            </ul>
-            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
     </nav>';
         return $html;
@@ -95,8 +91,7 @@ class template
             </li>
         </ul>
     </header>
-    </div>
-    <script type="text/javascript" src="'. $this->ROOT .'js/materialize.min.js"></script>';
+    </div>';
         
     return $html; 
     }
