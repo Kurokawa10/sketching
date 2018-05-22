@@ -64,6 +64,15 @@ div {
     display: block;
 }
 
+
+.row-image{
+    width: 20%;
+    float: left;
+    padding: 10px;
+    margin: 5px;
+    border-bottom: 20px !important;
+}
+
 .relaxing-pink{
     background-color: #edd1eb !important;
 }

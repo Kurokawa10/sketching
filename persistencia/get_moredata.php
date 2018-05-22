@@ -24,12 +24,12 @@
                             <div class="card-image">
                                 <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
-                                    <span class="card-title"><strong><?php echo $value->getNombre(); ?></strong></span>
+                                    <span class="card-title"><strong><?php echo $value->getvisitas(); ?> Views</strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
                                 <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
-                                    <h5><?php echo $value->getDescripcion(); ?></h5>
+                                    <h5><?php echo $value->getNombre(); ?></h5>
                                 </a>
                             </div>
                         </div>

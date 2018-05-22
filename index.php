@@ -110,12 +110,12 @@ $template = new Template($ROOT);
                             <div class="card-image">
                                 <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
-                                    <span class="card-title"><strong><?php echo $value->getNombre(); ?></strong></span>
+                                    <span class="card-title"><strong><?php echo $value->getVisitas(); ?> Views</strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
                                 <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
-                                    <h5><?php echo $value->getDescripcion(); ?></h5>
+                                    <h5><?php echo $value->getNombre(); ?></h5>
                                 </a>
                                 <a style="float: right" href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId().'#disqus_thread'; ?>">comments</a>
                             </div>
@@ -193,6 +193,7 @@ $template = new Template($ROOT);
          <?php } ?>
     </div>
     <?php echo $template->footer(); ?>
+    <script id="dsq-count-scr" src="//sketchingcastelar.disqus.com/count.js" async></script>
 </body>
 </html>
 

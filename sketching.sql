@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-05-2018 a las 16:59:24
+-- Tiempo de generación: 23-05-2018 a las 00:35:44
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.0.30
 
@@ -48,7 +48,9 @@ INSERT INTO `acceso` (`id_usuario`, `password`, `ultimo_acceso`, `rol`) VALUES
 (31, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-17 09:39:57', 1),
 (32, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-17 09:44:35', 1),
 (34, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-17 10:01:03', 1),
-(35, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-17 10:03:37', 1);
+(35, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-17 10:03:37', 1),
+(39, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2018-05-21 02:01:53', 1),
+(40, 'f2c28760605693c73d3855b73769d606c1f5dbbebcb1f5f2fd951fb6b8ef2d36', '2018-05-21 08:46:47', 1);
 
 -- --------------------------------------------------------
 
@@ -59,10 +61,24 @@ INSERT INTO `acceso` (`id_usuario`, `password`, `ultimo_acceso`, `rol`) VALUES
 CREATE TABLE `galeria` (
   `id` int(11) NOT NULL,
   `nombre` varchar(40) NOT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
   `autor` int(11) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `visitas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `galeria`
+--
+
+INSERT INTO `galeria` (`id`, `nombre`, `descripcion`, `autor`, `fecha_creacion`, `visitas`) VALUES
+(1, 'Prueba', 'Esta galeria esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(2, 'Prueba2', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(3, 'Mas pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(4, 'Otra pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(5, '5 pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(6, '6 pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
+(7, '7 prueba', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 57);
 
 -- --------------------------------------------------------
 
@@ -120,7 +136,9 @@ INSERT INTO `usuarios` (`id`, `username`, `email`, `nombre`, `apellido`, `birth_
 (31, 'cargonben', 'carlo64@hotmail.es', 'Carlos', 'Gonzalez', '1995-12-18', ''),
 (32, 'cargonben1', 'carlo64@hotmail.com', 'Carlos', 'CASd', '1987-05-05', 'cargonben1.jpg'),
 (34, 'kurokawa10', 'robert_gg@hotmail.com', 'Roberto García Gordi', 'Gordillo', '1987-05-05', 'kurokawa10.jpg'),
-(35, 'kurokawa11', 'robert5_gg@hotmail.co', 'Roberto García Gordi', 'Gordillo', '1987-05-01', 'kurokawa11.jpg');
+(35, 'kurokawa11', 'robert5_gg@hotmail.co', 'Roberto García Gordi', 'Gordillo', '1987-05-01', 'kurokawa11.jpg'),
+(39, 'rgarciag10', 'robert5_gg@hotmail.com1', 'Roberto García Gordi', 'Gordillo', '1999-05-02', 'rgarciag10.png'),
+(40, 'Hasam', 'jsmjsmjsm17@gmail.com', 'Jorge', 'Sánchez Muñoz', '1997-05-06', '');
 
 --
 -- Índices para tablas volcadas
@@ -168,13 +186,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `acceso`
 --
 ALTER TABLE `acceso`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `galeria`
 --
 ALTER TABLE `galeria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
@@ -192,7 +210,7 @@ ALTER TABLE `pagos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Restricciones para tablas volcadas

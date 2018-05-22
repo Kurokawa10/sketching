@@ -7,6 +7,12 @@
  */
 
 session_start();
+
+include_once '../../persistencia/GaleriaDAO.php';
+include_once '../../objetos/Galeria.php';
+include_once '../../persistencia/UsuarioDAO.php';
+include_once '../../objetos/Usuario.php';
+
 //$ROOT = '/~robertogarcia/';
 $ROOT = '/sketching/';
 
@@ -25,14 +31,20 @@ if(empty($_SESSION)){
 
 if(isset($_GET['user']) && isset($_GET['gal'])) {
 
+    //ACUERDATE DE CAMBIAR ESTO A AUTOR
     $user = $_GET['user'];
     $gal = $_GET['gal'];
 
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $autor = $usuarioDao->getUserbyName($user);
 
-}
+    $galeriaDao = GaleriaDAO::singletonGaleria();
+    $listaUsuarios = $galeriaDao->addvisita($gal);
+    $galeria = $galeriaDao->getGaleria($gal);
 
-include_once '../templates/Template.php';
-$template = new Template($ROOT);
+
+    include_once '../templates/Template.php';
+    $template = new Template($ROOT);
 ?>
 
 <html>
@@ -63,17 +75,77 @@ $template = new Template($ROOT);
 <div class="columnaMain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
-            <div class="columnaMainLeft" style="margin: auto">
-                <img class="responsive-img" src="../app_images/logo.png">
+            <div class="columnaPostLeft">
+                <?php
+                $fotos = scandir($user.'/'.$gal);
+                //para eliminar las entradas ./ ../
+                array_shift($fotos);
+                array_shift($fotos);
+                foreach ($fotos as $value){ ?>
+                    <div class="row row-image white lighten-5 z-depth-1-half">
+                        <div class=" valign-wrapper">
+                            <a href="">
+                                <img class="responsive-img" src="<?php echo $user.'/'.$gal.'/'.$value; ?>"/>
+                            </a>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-            <div class="columnaMainRight">
-                <form method="post" action="Login" name="login">
-                    <label for="user" class="text-lighten-2"><h6><strong>Usuario</strong></h6></label>
-                    <input id="user" type="text" name="username" required/><br/>
-                    <label for="pass"><h6><strong>Contraseña</strong></h6></label>
-                    <input id="pass" type="password" name="password" required/><br/>
-                    <button class="btn waves-effect waves-light" type="submit" name="submit" value="enviar" onclick="cifrar()">Login</button>
-                </form>
+            <div class="columnaPostRight">
+                <div class="card-panel grey lighten-5 z-depth-1 col s12">
+                    <div class="row valign-wrapper">
+                        <div class="col s12">
+                            <span class="black-text center">
+                                <h5>
+                                    <b>
+                                        <?php echo $galeria->getNombre(); ?>
+                                    </b>
+                                </h5>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col s10">
+                        <span class="black-text center-align">
+                                <h6><b><?php echo $galeria->getVisitas(); ?></b> Views</h6>
+                        </span>
+                    </div>
+                    <div class="col s10">
+                        <span class="black-text center-align">
+                                <?php echo $galeria->getDescripcion(); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="card-panel grey lighten-5 z-depth-1 col s12">
+                    <a href="<?php echo $ROOT . $user; ?>">
+                    <div class="row valign-wrapper">
+                        <div class="col s4">
+                            <img class="circle" src="<?php echo Funciones::showImageProfile('../profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+                        </div>
+                        <div class="col s8">
+                        <span class="black-text">
+                            <h5>
+                                <b>
+                                    <?php echo $autor->getUsername(); ?>
+                                </b>
+                            </h5>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                    <span class="black-text center-align">
+                        <p>
+                            <h6>
+                                <b>
+                                    <?php echo '666'; ?>
+                                </b>
+                                Followers
+                            </h6>
+                        </p>
+                        redes sociales
+                    </span>
+                    </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -97,6 +169,9 @@ $template = new Template($ROOT);
 
 </div>
 <?php echo $template->footer();?>
-<script id="dsq-count-scr" src="//sketchingcastelar.disqus.com/count.js" async></script>
+
 </body>
 </html>
+<?php }else{
+    header('Location: /sketching/interfaz/galerias/gallery.php');
+} ?>

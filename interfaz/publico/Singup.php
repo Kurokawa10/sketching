@@ -41,7 +41,6 @@ if (isset($_POST['submit'])) {
 
 
     if (!empty($_FILES['imagefile']['name'])){
-        var_dump($_FILES);
         $nombreOriginal=$_FILES['imagefile']['name'];
         $posPunto=strpos($nombreOriginal,".")+1;
         $extensionOriginal=  substr($nombreOriginal, $posPunto, 3);

@@ -6,6 +6,8 @@
  * Time: 21:55
  */
 
+require_once 'Conexion.php';
+
 class GaleriaDAO
 {
     private static $instancia;
@@ -22,12 +24,31 @@ class GaleriaDAO
         }
         return self::$instancia;
     }
+
+    public function getGaleria($id)
+    {
+        try {
+            $consulta="SELECT * FROM galeria WHERE id = " . $id;
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $lGalerias=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getGaleria";
+        }
+        foreach ($lGalerias as $clave => $valor){
+            $arrayGalerias = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+        }
+        return $arrayGalerias;
+    }
     
     public function getGaleriasByUser($userId)
     {
 
         try {
-            $consulta="SELECT * FROM galerias WHERE autor = " . $userId;
+            $consulta="SELECT * FROM galeria WHERE autor = " . $userId;
 
             $query=$this->db->preparar($consulta);
 
@@ -80,6 +101,22 @@ class GaleriaDAO
             $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
         }
         return $arrayGalerias;
+    }
+
+    public function addvisita($idGaleria)
+    {
+        try {
+            $consulta="UPDATE galeria SET visitas = visitas + 1 WHERE id = ".$idGaleria ;
+            $query=$this->db->preparar($consulta);
+            $rGaleria = $query->execute();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en addvisita";
+            $rGaleria = false;
+        }
+
+
+        return $rGaleria;
     }
     
     
