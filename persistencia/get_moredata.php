@@ -22,15 +22,25 @@
                     <div class="col s12">
                         <div class="card large">
                             <div class="card-image">
-                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                <a href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
                                     <span class="card-title"><strong><?php echo $value->getvisitas(); ?> Views</strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
-                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                <a href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <h5><?php echo $value->getNombre(); ?></h5>
+                                    <h6><?php if($value->getTipo() == 1){
+                                            echo '1€ sub';
+                                        }elseif ($value->getTipo() == 3){
+                                            echo '3€ sub';
+                                        }elseif ($value->getTipo() == 5){
+                                            echo '5€ sub';
+                                        }else{
+                                            echo 'Public';
+                                        } ?> Gallery</h6>
                                 </a>
+                                <a style="float: right" href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId().'#disqus_thread'; ?>">comments</a>
                             </div>
                         </div>
                     </div>

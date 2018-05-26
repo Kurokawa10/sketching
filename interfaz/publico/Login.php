@@ -6,8 +6,6 @@
  * Time: 17:02
  */
 session_start();
-//$ROOT = '/~robertogarcia/';
-$ROOT = '/sketching/';
 
 //var_dump($_SESSION);
 
@@ -16,14 +14,8 @@ require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
-$direccion = $ROOT.'index';
-if(!empty($_SESSION)){
-
-    header('Location: '.$direccion);
-}
-
 include_once '../templates/Template.php';
-$template = new Template($ROOT);
+$template = new Template('../../');
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
@@ -42,11 +34,16 @@ if (isset($_POST['submit'])) {
             $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
             $_SESSION['rol'] = $u->getAcceso()->getRol();
 
-            header('Location: '.$direccion);
+            header('Location: ../../index');
         }else {
             header('Location: login?identificado=1');
         }
     }
+}
+
+if(!empty($_SESSION)){
+
+    header('Location: ../../index');
 }
 ?>
 
@@ -93,9 +90,9 @@ if (isset($_POST['submit'])) {
                     }
                 ?>
                 <form method="post" action="Login" name="login">
-                    <label for="user" class="text-lighten-2"><h6><strong>Usuario</strong></h6></label>
+                    <label for="user" class="text-lighten-2"><h6><strong>User</strong></h6></label>
                     <input id="user" type="text" name="username" required/><br/>
-                    <label for="pass"><h6><strong>Contraseña</strong></h6></label>
+                    <label for="pass"><h6><strong>Password</strong></h6></label>
                     <input id="pass" type="password" name="password" required/><br/>
                     <button class="btn waves-effect waves-light light-blue" type="submit" name="submit" value="enviar" onclick="cifrar()">Login</button>
                 </form>

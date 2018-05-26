@@ -10,9 +10,7 @@ session_start();
 include_once '../templates/Template.php';
 include_once '../../objetos/Usuario.php';
 include_once '../../persistencia/UsuarioDAO.php';
-
-//$ROOT = '/~robertogarcia/';
-$ROOT = '/sketching/';
+include_once '../../persistencia/GaleriaDAO.php';
 
 if(empty($_SESSION)){
     //Elementos Logged out
@@ -20,23 +18,23 @@ if(empty($_SESSION)){
 }else{
     //Elementos logged in
     $profileImage = $_SESSION['profileImage'];
-    $profImageURL = 'interfaz/profile_images/profile_'.$profileImage;
+    $profImageURL = '../../interfaz/profile_images/profile_'.$profileImage;
 }
 
 if(isset($_GET['search'])){
     $busqueda = $_GET['search'];
     $usuarioDao = UsuarioDAO::singletonUsuario();
     $listaUsuarios = $usuarioDao->getBusquedaUsuarios($busqueda);
-    //var_dump($listaUsuarios);
+
     if(empty($listaUsuarios)){
         $notFound = true;
     } else {
         $notFound = false;
         if (count($listaUsuarios) === 1) {
-            header('Location: ' . $ROOT . $listaUsuarios[0]->getUsername());
+            header('Location: ../../' . $listaUsuarios[0]->getUsername());
         }
     }
-$template = new Template($ROOT);
+$template = new Template('../../');
 
 ?>
 <!DOCTYPE html>
@@ -76,16 +74,18 @@ $template = new Template($ROOT);
             <thead>
             <tr>
                 <th class="center">Autor</th>
-                <th class="center"></th>
-                <th class="center">estilo</th>
+                <th class="center">Autor</th>
+                <th class="center">Galerias</th>
             </tr>
             </thead>
 
             <tbody>
             <?php foreach ($listaUsuarios as $valor){
+                $galeriaDAO = GaleriaDAO::singletonGaleria();
+                $count = $galeriaDAO->countGaleriasByUser($valor->getId());
                 echo '<tr>
                     <td class="col s1" width="16%">
-                        <a href="'. $ROOT. $valor->getUsername() .'">
+                        <a href="../../'. $valor->getUsername() .'">
                         <div class="row valign-wrapper">
                             <div class="s1">
                                 <img src="../../interfaz/profile_images/profile_'. $valor->getProfileImage().'" alt="" class="circle" height="80px" width="80px">
@@ -93,11 +93,20 @@ $template = new Template($ROOT);
                         </div>
                         </a>
                     </td>
-                    <td class="left-align">
-                    <a href="'. $ROOT. $valor->getUsername() .'">
+                    <td class="center">
+                    <a href="../../'. $valor->getUsername() .'">
                         <div class="row valign-wrapper">
                             <div class="col s10">
-                                <span class="black-text">'. $valor->getUsername() .'</span>
+                                <h5 class="black-text">'. $valor->getUsername() .'</h5>
+                            </div>
+                        </div>    
+                        </a>     
+                    </td>
+                    <td class="center">
+                    <a href="../../'. $valor->getUsername() .'">
+                        <div class="row valign-wrapper">
+                            <div class="col s4">
+                                <h5 class="black-text">'. $count .'</h5>
                             </div>
                         </div>    
                         </a>     

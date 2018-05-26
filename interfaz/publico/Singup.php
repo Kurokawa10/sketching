@@ -12,23 +12,17 @@ require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
-//$ROOT = '/~robertogarcia/';
-$ROOT = '/sketching/';
-
-//var_dump($_SESSION);
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
-
-$direccion = $ROOT.'index';
 if(!empty($_SESSION)){
-    header('Location: '.$direccion);
+    header('Location: ../../index');
 }
 
 include '../templates/Template.php';
-$template = new Template($ROOT);
+$template = new Template('../../');
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
@@ -52,7 +46,7 @@ if (isset($_POST['submit'])) {
     }
 
     $usuarioDao = UsuarioDAO::singletonUsuario();
-    $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile, new Acceso(null, $password, date('Y/m/d h:i:s', time()) , 1));
+    $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile,null, new Acceso(null, $password, date('Y/m/d h:i:s', time()) , 1));
     $usuarioDao->altaUsuario($user);
     $u = $usuarioDao->getLoginPassword($username, $password);
     if (!is_null($u)) {
@@ -63,7 +57,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['rol'] = $u->getAcceso()->getRol();
         mkdir('../galerias/'.$u->getUsername(), 700, true);
 
-        header('Location: ' .$direccion);
+        header('Location: ../../index');
     }
 
 }

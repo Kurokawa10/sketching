@@ -7,10 +7,10 @@
  */
 class Funciones {
     //put your code here
-    public static function showImageProfile($image){
+    public static function showImageProfile($image, $root){
     
         if($image === 'interfaz/profile_images/profile_'){
-            $image = "/sketching/interfaz/app_images/profile-alt.png";
+            $image = $root . "interfaz/app_images/profile-alt.png";
         }
         return $image;
 }

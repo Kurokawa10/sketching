@@ -40,7 +40,7 @@ class UsuarioDAO
             echo "Se ha producido un error en getListaUsuarios";
         }
         foreach ($lUsuarios as $clave => $valor){
-            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6],null);
+            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], $valor[7], null);
         }
         return $arrayUsuarios;
     }
@@ -61,7 +61,7 @@ class UsuarioDAO
         }
         $arrayUsuarios = null;
         foreach ($lUsuarios as $clave => $valor){
-            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], null);
+            $arrayUsuarios[$clave] = new Usuario($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], $valor[7], null);
         }
         return $arrayUsuarios;
     }
@@ -81,7 +81,7 @@ class UsuarioDAO
         }
         else{
 
-            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], null);
+            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], $tUsuarios[0][7],null);
         }
         return $u;
     }
@@ -101,7 +101,7 @@ class UsuarioDAO
         }
         else{
 
-            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], null);
+            $u=new Usuario($tUsuarios[0][0], $tUsuarios[0][1], $tUsuarios[0][2], $tUsuarios[0][3], $tUsuarios[0][4], $tUsuarios[0][5], $tUsuarios[0][6], $tUsuarios[0][7], null);
         }
         return $u;
     }
@@ -174,7 +174,7 @@ class UsuarioDAO
                 $u = null;
             } else {
                 $a = new Acceso($aAcceso[0][0], null, $aAcceso[0][2], $aAcceso[0][3]);
-                $u = new Usuario($aUsuario[0][0], $aUsuario[0][1], $aUsuario[0][2], $aUsuario[0][3], $aUsuario[0][4], $aUsuario[0][5],  $aUsuario[0][6], $a);
+                $u = new Usuario($aUsuario[0][0], $aUsuario[0][1], $aUsuario[0][2], $aUsuario[0][3], $aUsuario[0][4], $aUsuario[0][5],  $aUsuario[0][6], $aUsuario[0][7], $a);
 
             }
         }
@@ -221,29 +221,5 @@ class UsuarioDAO
         }
         return  $insertado;
     }
-
-    /*
-    public function bajaUsuario($idUsuario)
-    {
-        try {
-            $consulta="UPDATE usuarios SET activo=0 WHERE"
-                . " id_usuario="
-                .$idUsuario. ";";
-
-            $query=$this->db->preparar($consulta);
-
-            $query->execute();
-            $eliminado=true;
-
-
-        } catch (Exception $ex) {
-            $eliminado=false;
-        }
-
-        return  $eliminado;
-    }*/
-
-
-
 
 }

@@ -12,39 +12,57 @@ include_once '../../persistencia/GaleriaDAO.php';
 include_once '../../objetos/Galeria.php';
 include_once '../../persistencia/UsuarioDAO.php';
 include_once '../../objetos/Usuario.php';
-
-//$ROOT = '/~robertogarcia/';
-$ROOT = '/sketching/';
+include_once '../../persistencia/SubsDAO.php';
+include_once '../../objetos/Subs.php';
 
 //var_dump($_SESSION);
 
 
-$direccion = $ROOT.'index';
 if(empty($_SESSION)){
 
-    header('Location: '.$direccion);
+    header('Location: index');
 }else{
     //Elementos logged in
     $profileImage = $_SESSION['profileImage'];
     $profImageURL = '../profile_images/profile_'.$profileImage;
 }
 
-if(isset($_GET['user']) && isset($_GET['gal'])) {
+if(isset($_GET['autor']) && isset($_GET['gal'])) {
 
-    //ACUERDATE DE CAMBIAR ESTO A AUTOR
-    $user = $_GET['user'];
+    $autor = $_GET['autor'];
     $gal = $_GET['gal'];
 
     $usuarioDao = UsuarioDAO::singletonUsuario();
-    $autor = $usuarioDao->getUserbyName($user);
+    $autor = $usuarioDao->getUserbyName($autor);
 
     $galeriaDao = GaleriaDAO::singletonGaleria();
-    $listaUsuarios = $galeriaDao->addvisita($gal);
-    $galeria = $galeriaDao->getGaleria($gal);
+    if(!empty($_SESSION)){
+        $user = $usuarioDao->getUserbyName($_SESSION['username']);
+        $galeria = $galeriaDao->getGaleria($gal);
+
+        $subsDao = SubsDAO::singletonSubs();
+        $sub = $subsDao->getSubByUserAndAutor($user->getId(), $autor->getId());
+        if($sub != null){
+            if($sub->getTipo() >= $galeria->getTipo()){
+
+            }else{
+                header('Location: index');
+            }
+
+        }else{
+            if($galeria->getTipo() == 0){
+
+            }else{
+                header('Location: index');
+            }
+        }
+
+        $listaUsuarios = $galeriaDao->addvisita($gal);
+    }
 
 
     include_once '../templates/Template.php';
-    $template = new Template($ROOT);
+    $template = new Template('../../');
 ?>
 
 <html>
@@ -80,14 +98,14 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
         <div class="light-green lighten-4">
             <div id="images" class="columnaPostLeft">
                 <?php
-                $fotos = scandir($user.'/'.$gal);
+                $fotos = scandir($autor->getUsername().'/'.$gal);
                 //para eliminar las entradas ./ ../
                 array_shift($fotos);
                 array_shift($fotos);
                 foreach ($fotos as $value){ ?>
                     <div class="row row-image white lighten-5 z-depth-1-half">
                         <div class=" valign-wrapper">
-                            <img id="image" class="responsive-img" src="<?php echo $user.'/'.$gal.'/'.$value; ?>"/>
+                            <img id="image" class="responsive-img" src="<?php echo $autor->getUsername().'/'.$gal.'/'.$value; ?>"/>
                         </div>
                     </div>
                 <?php } ?>
@@ -117,10 +135,10 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
                     </div>
                 </div>
                 <div class="card-panel grey lighten-5 z-depth-1 col s12">
-                    <a href="<?php echo $ROOT . $user; ?>">
+                    <a href="<?php echo '../../' . $autor->getUsername(); ?>">
                     <div class="row valign-wrapper">
                         <div class="col s4">
-                            <img class="circle" src="<?php echo Funciones::showImageProfile('../profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+                            <img class="circle" src="<?php echo Funciones::showImageProfile('../profile_images/profile_' . $autor->getProfileImage(), '../../'); ?>" width="60px" height="60px">
                         </div>
                         <div class="col s8">
                         <span class="black-text">
@@ -137,12 +155,14 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
                         <p>
                             <h6>
                                 <b>
-                                    <?php echo '666'; ?>
+                                    <?php
+                                    $sub = $subsDao->countSubsByAutor($autor->getId());
+                                    echo $sub; ?>
                                 </b>
                                 Followers
                             </h6>
                         </p>
-                        redes sociales
+                        <?php echo $autor->getDescripcion(); ?>
                     </span>
                     </div>
                     </a>
@@ -170,7 +190,7 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
         });
 
         var disqus_config = function () {
-        this.page.url = 'http://localhost/sketching/interfaz/galerias/gallery?user=<?php echo $user; ?>&gal=<?php echo $gal; ?>';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.url = 'http://sketching.sytes.net/interfaz/galerias/gallery?user=<?php echo $user; ?>&gal=<?php echo $gal; ?>';  // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = '<?php echo $gal; ?>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
 
@@ -189,5 +209,5 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
 </body>
 </html>
 <?php }else{
-    header('Location: /sketching/interfaz/galerias/gallery.php');
+    header('Location: /interfaz/galerias/gallery.php');
 } ?>

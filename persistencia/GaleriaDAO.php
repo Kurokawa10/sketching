@@ -39,7 +39,7 @@ class GaleriaDAO
             echo "Se ha producido un error en getGaleria";
         }
         foreach ($lGalerias as $clave => $valor){
-            $arrayGalerias = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+            $arrayGalerias = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6]);
         }
         return $arrayGalerias;
     }
@@ -59,7 +59,7 @@ class GaleriaDAO
             echo "Se ha producido un error en getGaleriasByUser";
         }
         foreach ($lGalerias as $clave => $valor){
-            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6]);
         }
         return $arrayGalerias;
     }
@@ -79,7 +79,7 @@ class GaleriaDAO
         $arrayGalerias = null;
 
         foreach ($lGalerias as $clave => $valor) {
-            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6]);
         }
         return $arrayGalerias;
     }
@@ -98,7 +98,7 @@ class GaleriaDAO
         $arrayGalerias = null;
 
         foreach ($lGalerias as $clave => $valor){
-            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5]);
+            $arrayGalerias[$clave] = new Galeria($valor[0], $valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6]);
         }
         return $arrayGalerias;
     }
@@ -118,7 +118,24 @@ class GaleriaDAO
 
         return $rGaleria;
     }
-    
+
+    public function countGaleriasByUser($userId)
+    {
+
+        try {
+            $consulta="SELECT count(*) FROM galeria WHERE autor = " . $userId;
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $lGalerias=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en countGaleriasByUser";
+        }
+
+        return $lGalerias[0][0];
+    }
     
     
     

@@ -18,7 +18,6 @@ $(function(){
                 }
             },
             error: function (response) {
-                //CAPTURA EL ERROR DE ALGUNA MANERA o no....
             }
         });
         valirForm();

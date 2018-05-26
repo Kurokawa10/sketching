@@ -13,19 +13,19 @@ include_once 'objetos/Usuario.php';
 include_once 'interfaz/templates/Funciones.php';
 include_once 'persistencia/GaleriaDAO.php';
 include_once 'objetos/Galeria.php';
+include_once 'persistencia/SubsDAO.php';
+include_once 'objetos/Subs.php';
 
-//$ROOT = '/~robertogarcia/';
-$ROOT = '/sketching/';
+//var_dump($_SESSION);
 
 $path = ltrim($_SERVER['REQUEST_URI'], '/');    // Trim leading slash(es)
 $elements = explode('/', $path);                // Split path on slashes
+
 if(empty($elements[0])) {                       // No path elements means home
 
 } else{
-    array_shift($elements);
-    //var_dump($elements);
     if(count($elements) >= 2){
-        header('Location: '. $ROOT .'index');
+        header('Location: ../index');
     }else{
         if(empty($elements[0]) || $elements[0] === 'index'){
             //pagina principal
@@ -34,7 +34,7 @@ if(empty($elements[0])) {                       // No path elements means home
             $usuarioDao = UsuarioDAO::singletonUsuario();
             $autor = $usuarioDao->getUserbyName($userSelec);
             if(empty($autor)){
-                header('Location: '. $ROOT .'interfaz/publico/Busqueda.php');
+                header('Location: interfaz/publico/Busqueda.php');
             }
         }
     }
@@ -57,7 +57,7 @@ if(empty($_SESSION)){
 }
 
 include 'interfaz/templates/Template.php';
-$template = new Template($ROOT);
+$template = new Template('');
 ?>
 
 <!DOCTYPE html>
@@ -100,6 +100,15 @@ $template = new Template($ROOT);
             $galerias1 = $galeriaDao->getUltGaleriasByUser($autor->getId());
             ?>
         <div class="columnaPostLeft">
+            <?php if($_SESSION['username'] === $userSelec){ ?>
+                <div class="valign-wrapper">
+                    <div class="col s8">
+                        <a href="interfaz/privado/CreateGallery">
+                            <button class="btn waves-effect waves-light light-blue">New Gallery</button>
+                        </a>
+                    </div>
+                </div>
+            <?php } ?>
             <p hidden id="need" aria-valuenow="<?php echo $autor->getId(); ?>"></p>
             <div class="row" id="alldata">
             <?php if(!empty($galerias1)){
@@ -108,16 +117,25 @@ $template = new Template($ROOT);
                     <div class="col s12">
                         <div class="card large">
                             <div class="card-image">
-                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                <a href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">
                                     <span class="card-title"><strong><?php echo $value->getVisitas(); ?> Views</strong></span>
                                 </a>
                             </div>
                             <div class="card-content">
-                                <a href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
+                                <a href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <h5><?php echo $value->getNombre(); ?></h5>
+                                    <h6><?php if($value->getTipo() == 1){
+                                            echo '1€ sub';
+                                        }elseif ($value->getTipo() == 3){
+                                            echo '3€ sub';
+                                        }elseif ($value->getTipo() == 5){
+                                            echo '5€ sub';
+                                        }else{
+                                            echo 'Public';
+                                        } ?> Gallery</h6>
                                 </a>
-                                <a style="float: right" href="interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId().'#disqus_thread'; ?>">comments</a>
+                                <a style="float: right" href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId().'#disqus_thread'; ?>">comments</a>
                             </div>
                         </div>
                     </div>
@@ -130,9 +148,18 @@ $template = new Template($ROOT);
         </div>
         <div class="columnaPostRight">
             <div class="card-panel grey lighten-5 z-depth-1 col s12">
+                <?php if($_SESSION['username'] === $userSelec){ ?>
+                    <div class="valign-wrapper">
+                        <div class="col s8">
+                            <a href="interfaz/privado/Profile">
+                                <button class="btn waves-effect waves-light light-blue">Edit Profile</button>
+                            </a>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="row valign-wrapper">
                     <div class="col s4">
-                        <img class="circle" src="<?php echo Funciones::showImageProfile('interfaz/profile_images/profile_' . $autor->getProfileImage()); ?>" width="60px" height="60px">
+                        <img class="circle" src="<?php echo Funciones::showImageProfile('interfaz/profile_images/profile_' . $autor->getProfileImage(), ''); ?>" width="60px" height="60px">
                     </div>
                     <div class="col s8">
                         <span class="black-text">
@@ -149,12 +176,14 @@ $template = new Template($ROOT);
                         <p>
                             <h6>
                                 <b>
-                                    <?php echo '666'; ?>
+                                    <?php $subsDao = SubsDAO::singletonSubs();
+                                    $sub = $subsDao->countSubsByAutor($autor->getId());
+                                    echo $sub; ?>
                                 </b>
                                 Followers
                             </h6>
                         </p>
-                        redes sociales
+                        <?php echo $autor->getDescripcion(); ?>
                     </span>
                 </div>
             </div>
@@ -170,29 +199,65 @@ $template = new Template($ROOT);
                     </ul>
                 </div>
                 <div class="card-content grey lighten-4">
-                    <form name="formSubscribe" action="interfaz/privado/Subscribe" method="POST" enctype="multipart/form-data">
-                        <div id="tab1">
-                            <p>Access to new content each month</p>
-                            <br>
-                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="1">Subscribe for 1€/month</button>
-                        </div>
-                        <div id="tab2">
-                            <p>Access to my WIP</p>
-                            <br>
-                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="3">Subscribe for 3€/month</button>
-                        </div>
-                        <div id="tab3">
-                            <p>Access to Exclusive content</p>
-                            <br>
-                            <button class="btn waves-effect waves-light orange" type="submit" name="reward" value="5">Subscribe for 5€/month</button>
-                        </div>
-                    <form>
+                    <div id="tab1" class="center">
+                        <p>Access to new content each month</p>
+                        <br>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="9M2CD3LYFCY52">
+                            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" onclick="suscribir(1)" alt="PayPal, la forma rápida y segura de pagar en Internet.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </div>
+                    <div id="tab2" class="center">
+                        <p>Access to my WIP</p>
+                        <br>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_xclick-subscriptions">
+                            <input type="hidden" name="business" value="robert5_gg@hotmail.com">
+                            <input type="hidden" name="lc" value="ES">
+                            <input type="hidden" name="item_name" value="suscripcion 3€/mes">
+                            <input type="hidden" name="item_number" value="3mes">
+                            <input type="hidden" name="no_note" value="1">
+                            <input type="hidden" name="src" value="1">
+                            <input type="hidden" name="a3" value="3.00">
+                            <input type="hidden" name="p3" value="1">
+                            <input type="hidden" name="t3" value="M">
+                            <input type="hidden" name="currency_code" value="EUR">
+                            <input type="hidden" name="bn" value="PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHostedGuest">
+                            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" onclick="suscribir(3)" alt="PayPal, la forma rápida y segura de pagar en Internet.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </div>
+                    <div id="tab3" class="center">
+                        <p>Access to Exclusive content</p>
+                        <br>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="3QBU8VCSQ88QW">
+                            <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" onclick="suscribir(5)" alt="PayPal, la forma rápida y segura de pagar en Internet.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>
          <?php } ?>
     </div>
     <?php echo $template->footer(); ?>
+    <script>
+        function suscribir(a){
+            switch(a){
+                case 1:
+                    break;
+                case 3:
+                    break;
+                case 5:
+                    break;
+            }
+        }
+    </script>
     <script id="dsq-count-scr" src="//sketchingcastelar.disqus.com/count.js" async></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php
 
-FallbackResource /sketching/index.php
+FallbackResource /index.php
 #FallbackResource /~robertogarcia/index.php
 
 # Return 404 if original request is .php

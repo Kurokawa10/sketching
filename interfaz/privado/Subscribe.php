@@ -2,21 +2,22 @@
 session_start();
 //include_once '';
 
-if(isset($_POST['reward'])){
-    
-    switch ($_POST['reward']){
-        case '1':
-            
+if(isset($_SESSION['subs'])){
+    $autorSub = $_SESSION['autorsub'];
+    switch ($_SESSION['subs']){
+        case '1mes':
+            $tipoSub = 1;
             break;
-        case '3':
-            
+        case '3mes':
+            $tipoSub = 3;
             break;
-        case '5':
-            
+        case '5mes':
+            $tipoSub = 5;
             break;
         default :
             header('Location: 404');
     }
+    unset($_SESSION['subs']);
 }else{
     header('Location: 404');
 }

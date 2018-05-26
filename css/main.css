@@ -54,6 +54,8 @@
     padding: 10px;
     margin: auto;
     float: right;
+    /*right: 1%;
+    position: fixed;*/
     width: 33%;
     align-content: center;
     text-align: justify;

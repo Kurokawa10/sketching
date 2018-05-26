@@ -44,15 +44,17 @@ class template
                     <li><a class="black-text" href="'. $this->ROOT .'interfaz/publico/Login">Log in</a></li>';
                 }else {
                     $html .= '<li>
-                                <div class="row valign-wrapper">
-                                    <div class="col">
-                                      <img src="'. Funciones::showImageProfile($profileImage) .'" alt="" class="circle yellow" height="60px" width="60px">
-                                    </div>
-                                    <div class="col s5">
-                                      <span >
-                                        <a class="black-text" href="'. $this->ROOT .'interfaz/privado/Profile">Profile</a>
-                                      </span>
-                                    </div>
+                                <div class="row nav-wrapper">
+                                    <a class="black-text" href="'. $this->ROOT. '/' .$_SESSION['username'].'">
+                                        <div class="col">
+                                            <img src="'. Funciones::showImageProfile($profileImage, $this->ROOT) .'" alt="" class="circle yellow" height="60px" width="60px">
+                                        </div>
+                                        <div class="col s5">
+                                            <span >
+                                                Profile
+                                            </span>
+                                        </div>
+                                    </a>
                                 </div></li>
                         <li><form name="formLogout" action="'. $this->ROOT .'index" method="POST" enctype="multipart/form-data">
                         <input type="submit" value="logout" name="logout" class="small btn mdi-navigation-arrow-drop-down right relaxing-red">
@@ -104,7 +106,7 @@ class template
                     <img class="responsive-img" src="interfaz/app_images/logo.png">
                 </div>
                 <div class="columnaMainRight">
-                    <h1>BIENVENIDO</h1>
+                    <h1>WELCOME</h1>
                 </div>
             </div>
         </div>';
@@ -121,7 +123,7 @@ class template
             <div class="row">
               <div class="col l4 s4">
                 <h5 class="black-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">Final project for Cross-platform Apps development.</p>
+                <p class="black-text text-lighten-4">Final project for Cross-platform Apps development.</p>
               </div>
               <div class="col l4 offset-l1 s4">
                 <h5 class="black-text">Links</h5>
