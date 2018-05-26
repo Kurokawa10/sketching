@@ -60,7 +60,10 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <link type="text/css" rel="stylesheet" href="../../css/materialize.css"  media="screen,projection"/>
 
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script><!-- jQuery is required -->
+    <script src="../../dist/viewer.js"></script><!-- Viewer.js is required -->
+    <link  href="../../dist/viewer.css" rel="stylesheet">
+    <script src="../../dist/jquery-viewer.js"></script>
     <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>
     <script type="text/javascript" rel="script" src="../../js/menu.js"></script>
 
@@ -75,7 +78,7 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
 <div class="columnaMain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
-            <div class="columnaPostLeft">
+            <div id="images" class="columnaPostLeft">
                 <?php
                 $fotos = scandir($user.'/'.$gal);
                 //para eliminar las entradas ./ ../
@@ -84,9 +87,7 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
                 foreach ($fotos as $value){ ?>
                     <div class="row row-image white lighten-5 z-depth-1-half">
                         <div class=" valign-wrapper">
-                            <a href="">
-                                <img class="responsive-img" src="<?php echo $user.'/'.$gal.'/'.$value; ?>"/>
-                            </a>
+                            <img id="image" class="responsive-img" src="<?php echo $user.'/'.$gal.'/'.$value; ?>"/>
                         </div>
                     </div>
                 <?php } ?>
@@ -153,6 +154,21 @@ if(isset($_GET['user']) && isset($_GET['gal'])) {
 
     <div id="disqus_thread"></div>
     <script>
+
+        $('#images').on('click', function () {
+            var $image = $('#images');
+            $image.viewer({
+                rotatable: false,
+                title: false,
+                movable: false,
+                scalable: false,
+                viewed: function () {
+                    $image.viewer('zoomTo', 1);
+                }
+            });
+            var viewer = $image.data('viewer');
+        });
+
         var disqus_config = function () {
         this.page.url = 'http://localhost/sketching/interfaz/galerias/gallery?user=<?php echo $user; ?>&gal=<?php echo $gal; ?>';  // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = '<?php echo $gal; ?>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable

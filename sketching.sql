@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2018 a las 00:35:44
+-- Tiempo de generación: 23-05-2018 a las 21:32:54
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.0.30
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sketching`
 --
-CREATE DATABASE IF NOT EXISTS `sketching` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `sketching`;
 
 -- --------------------------------------------------------
 
@@ -78,21 +76,7 @@ INSERT INTO `galeria` (`id`, `nombre`, `descripcion`, `autor`, `fecha_creacion`,
 (4, 'Otra pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
 (5, '5 pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
 (6, '6 pruebas hardc', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 0),
-(7, '7 prueba', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 57);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `imagenes`
---
-
-CREATE TABLE `imagenes` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `link` varchar(100) NOT NULL,
-  `fecha_subida` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_galeria` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(7, '7 prueba', 'Esta galeria tambien esta hardcodeada, es solo de pruebas', 1, '2018-05-20 20:00:00', 78);
 
 -- --------------------------------------------------------
 
@@ -107,6 +91,19 @@ CREATE TABLE `pagos` (
   `destinatario` int(11) NOT NULL,
   `cantidad` decimal(10,2) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `subs`
+--
+
+CREATE TABLE `subs` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_autor` int(11) NOT NULL,
+  `tipo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -158,17 +155,19 @@ ALTER TABLE `galeria`
   ADD KEY `autor` (`autor`);
 
 --
--- Indices de la tabla `imagenes`
---
-ALTER TABLE `imagenes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_galeria` (`id_galeria`);
-
---
 -- Indices de la tabla `pagos`
 --
 ALTER TABLE `pagos`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `subs`
+--
+ALTER TABLE `subs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UC_suscripciones` (`id_user`,`id_autor`),
+  ADD KEY `id_autor` (`id_autor`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -195,15 +194,15 @@ ALTER TABLE `galeria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de la tabla `imagenes`
---
-ALTER TABLE `imagenes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `subs`
+--
+ALTER TABLE `subs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -229,10 +228,11 @@ ALTER TABLE `galeria`
   ADD CONSTRAINT `galeria_ibfk_1` FOREIGN KEY (`autor`) REFERENCES `usuarios` (`id`);
 
 --
--- Filtros para la tabla `imagenes`
+-- Filtros para la tabla `subs`
 --
-ALTER TABLE `imagenes`
-  ADD CONSTRAINT `imagenes_ibfk_1` FOREIGN KEY (`id_galeria`) REFERENCES `galeria` (`id`);
+ALTER TABLE `subs`
+  ADD CONSTRAINT `subs_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id`),
+  ADD CONSTRAINT `subs_ibfk_2` FOREIGN KEY (`id_autor`) REFERENCES `usuarios` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
