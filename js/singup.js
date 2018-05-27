@@ -7,7 +7,7 @@ $(function(){
 
     $('#user_singup').on('blur', function() {
 
-        $.ajax({type: "GET", url: "/sketching/persistencia/getUserRegistrado?nameUser=" + $('#user_singup').val(),
+        $.ajax({type: "GET", url: "/persistencia/getUserRegistrado?nameUser=" + $('#user_singup').val(),
             success: function(response) {
                 if (response.indexOf('true') !== -1) {
                     $('#user_singup_label').text('Username there is already a user with the same name!').css("color", "red");
@@ -16,16 +16,16 @@ $(function(){
                     $('#user_singup_label').text('Username Valid!').css("color", "green");
                     bolUser = true;
                 }
+                valirForm();
             },
             error: function (response) {
             }
         });
-        valirForm();
     });
 
     $('#email_singup').on('blur', function() {
 
-        $.ajax({type: "GET", url: "/sketching/persistencia/getEmailRegistrado?email=" + $('#email_singup').val(),
+        $.ajax({type: "GET", url: "/persistencia/getEmailRegistrado?email=" + $('#email_singup').val(),
             success: function (response) {
                 if(( response.indexOf('true') !== -1 ) || ( $('#email_singup').val().indexOf('@', 0) === -1 || $('#email_singup').val().indexOf('.', 0) === -1) ){
                     $('#email_singup_label').text('E-mail Invalid!').css("color", "red");
@@ -34,13 +34,12 @@ $(function(){
                     $('#email_singup_label').text('E-mail Valid!').css("color", "green");
                     bolEmail = true;
                 }
+                valirForm();
             },
             error: function (response) {
 
             }
         });
-
-        valirForm();
     });
 
     $('#pass_singup').on('blur', function() {

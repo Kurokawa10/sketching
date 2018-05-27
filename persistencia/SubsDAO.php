@@ -101,4 +101,38 @@ class SubsDAO
 
         return $lSubs[0][0];
     }
+
+    public function addSub($userId, $autorId, $tipo){
+        try {
+            $consulta="INSERT INTO subs (id, id_user, id_autor, tipo) values (null,?,?,?)";
+            $query=$this->db->preparar($consulta);
+            @$query->bindParam(1,$userId);
+            @$query->bindParam(2,$autorId);
+            @$query->bindParam(3,$tipo);
+
+            $query->execute();
+            $insertado=true;
+
+        } catch (Exception $ex) {
+            $insertado=false;
+        }
+        return  $insertado;
+    }
+
+    public function unSub($userId, $autorId){
+        try {
+            $consulta="DELETE FROM subs WHERE id_user = ? AND id_autor = ?";
+            $query=$this->db->preparar($consulta);
+            @$query->bindParam(1,$userId);
+            @$query->bindParam(2,$autorId);
+
+            $query->execute();
+            $eliminado=true;
+
+        } catch (Exception $ex) {
+            $eliminado=false;
+        }
+        return  $eliminado;
+    }
+
 }

@@ -86,6 +86,26 @@ class UsuarioDAO
         return $u;
     }
 
+    public function getIdByName($userName)
+    {
+        try {
+            $consulta="SELECT id FROM usuarios WHERE username='" .$userName ."'";
+            $query=$this->db->preparar($consulta);
+            $query->execute();
+            $tUsuarios=$query->fetchAll();
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getUnUsuario";
+        }
+        if (empty($tUsuarios)){
+            $u=null;
+        }
+        else{
+
+            $u=$tUsuarios[0][0];
+        }
+        return $u;
+    }
+
     public function getUsuario($numUsuario)
     {
         try {
@@ -221,5 +241,55 @@ class UsuarioDAO
         }
         return  $insertado;
     }
+
+    public function actualizarUsuario(Usuario $u, $username){
+        try{
+            $consulta="UPDATE usuarios SET username = ?, email = ?, nombre  = ?, apellido = ?, birth_date = ?, profile_image = ?, descripcion = ? WHERE username = '".$username."'";
+            $query=$this->db->preparar($consulta);
+            @$query->bindParam(1,$u->getUsername());
+            @$query->bindParam(2,$u->getEmail());
+            @$query->bindParam(3,$u->getNombre());
+            @$query->bindParam(4,$u->getAppelido());
+            @$query->bindParam(5,$u->getBirthDate());
+            @$query->bindParam(6,$u->getProfileImage());
+            @$query->bindParam(7,$u->getDescripcion());
+
+            $query->execute();
+            $actualizado=true;
+
+        } catch (Exception $ex) {
+            $actualizado=false;
+        }
+
+        return $actualizado;
+    }
+
+
+    /*Actualizar password
+
+    try {
+                $consulta="SELECT id FROM usuarios WHERE username='". $u->getUsername() ."'";
+                $query=$this->db->preparar($consulta);
+                $query->execute();
+                $idUser = $query->fetchAll();
+
+                $consulta="UPDATE acceso SET password = ?,ultimo_acceso = ?,rol = ? WHERE id_usuario = ?";
+
+                $query=$this->db->preparar($consulta);
+                @$query->bindParam(1,$u->getAcceso()->getPassword());
+                @$query->bindParam(2,$u->getAcceso()->getUltimoAcceso());
+                @$query->bindParam(3,$u->getAcceso()->getRol());
+                @$query->bindParam(4,$idUser[0][0]);
+
+                $query->execute();
+                $actualizado=true;
+
+            } catch (Exception $ex) {
+                $actualizado=false;
+            }
+
+    */
+
+
 
 }

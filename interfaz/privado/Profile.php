@@ -15,52 +15,48 @@ require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 include '../templates/Template.php';
 
-if(empty($_SESSION)){
-    //Elementos Logged out
-    $profImageURL = null;
-}else{
-    //Elementos logged in
-    $profileImage = $_SESSION['profileImage'];
-    $profImageURL = '../../interfaz/profile_images/profile_'.$profileImage;
-}
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = $_POST['pass'];
     $name = $_POST['name'];
     $lastName = $_POST['lastname'];
     $birthDate = $_POST['birthdate'];
+    $descripcion = $_POST['description'];
     $imageProfile = "";
-
 
     if (!empty($_FILES['imagefile']['name'])){
         $nombreOriginal=$_FILES['imagefile']['name'];
         $posPunto=strpos($nombreOriginal,".")+1;
         $extensionOriginal=  substr($nombreOriginal, $posPunto, 3);
-        //echo "La extensión es: $extensionOriginal";
         $nuevaRuta = "../profile_images/profile_" . $username . "." . $extensionOriginal;
-        echo "El nuevo nombre es: $nuevaRuta";
         move_uploaded_file($_FILES['imagefile']['tmp_name'], $nuevaRuta);
         $imageProfile = $username. '.' . $extensionOriginal;
+    }else{
+        $imageProfile = $_SESSION['profileImage'];
     }
 
     $usuarioDao = UsuarioDAO::singletonUsuario();
-    $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile, null, new Acceso(null, $password, date('Y/m/d h:i:s', time()) , 1));
-    $usuarioDao->altaUsuario($user);
-    $u = $usuarioDao->getLoginPassword($username, $password);
-    if (!is_null($u)) {
+    $user = new Usuario(null, $username, $email, $name, $lastName, $birthDate, $imageProfile, $descripcion, null);
+    $usuarioDao->actualizarUsuario($user, $_SESSION['username']);
+    if (!is_null($user)) {
         //Guardar datos de este usuario en la sessión
-        $_SESSION['username'] = $u->getUsername();
-        $_SESSION['profileImage'] = $u->getProfileImage();
-        $_SESSION['ultimoAceso'] = $u->getAcceso()->getUltimoAcceso();
-        $_SESSION['rol'] = $u->getAcceso()->getRol();
-        mkdir('../galerias/'.$u->getUsername(), 700, true);
-
-        header('Location: ../../index');
+        $_SESSION['username'] = $username;
     }
-
 }
+
+if(empty($_SESSION)){
+    //Elementos Logged out
+    header('Location: ../../index');
+}else{
+    //Elementos logged in
+    $profileImage = $_SESSION['profileImage'];
+    $profImageURL = '../../interfaz/profile_images/profile_'.$profileImage;
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $placeUser = $usuarioDao->getUserByName($_SESSION['username']);
+}
+
+
 $template = new Template('../../');
 ?>
 
@@ -83,7 +79,7 @@ $template = new Template('../../');
 
     <script type="text/javascript" rel="script" src="../../js/materialize.js"></script>
     <script type="text/javascript" rel="script" src="../../js/menu.js"></script>
-    <script type="text/javascript" rel="script" src="../../js/singup.js"></script>
+    <script type="text/javascript" rel="script" src="../../js/modify.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -96,52 +92,39 @@ $template = new Template('../../');
 <div class="columnaMain" id="colmain">
     <div class="section no-pad-bot" id="index-banner">
         <div class="light-green lighten-4">
-            <form method="post" action="Singup" name="singup" enctype="multipart/form-data">
+            <form method="post" action="Profile" name="modify" enctype="multipart/form-data">
                 <div class="columnaMainLeft">
-                    <label  for="user_singup" class="text-lighten-2 col s4"><h6><strong id="user_singup_label">Username</strong></h6></label>
-                    <input id="user_singup" type="text" name="username" required/><br/>
-                    <label for="email_singup" class="text-lighten-2 col s4"><h6><strong id="email_singup_label">E-mail</strong></h6></label>
-                    <input id="email_singup" type="email" name="email" required/><br/>
-                    <label for="pass_singup" class="text-lighten-2 col s4"><h6><strong>Password</strong></h6></label>
-                    <input id="pass_singup" type="password" name="pass" required/><br/>
-                    <pre><label for="pass2_singup" class="text-lighten-2 col s4"><h6><strong id="pass2_singup_label">Repeat Password</strong></h6></label></pre>
-                    <input id="pass2_singup" type="password" name="password2" required/><br/>
-                    <div class="right-align"><button class="btn-large waves-effect waves-light right-aligned" id="submit_singup" type="submit" name="submit" value="singup" onclick="cifrar()" disabled>Sing Up</button></div>
+                    <label for="user_modify" class="text-lighten-2 col s4"><h6><strong id="user_modify_label">Username</strong></h6></label>
+                    <input id="user_modify" type="text" name="username" value="<?php echo $placeUser->getUsername(); ?>" required/><br/>
+                    <label for="email_modify" class="text-lighten-2 col s4"><h6><strong id="email_modify_label">E-mail</strong></h6></label>
+                    <input id="email_modify" type="email" name="email" value="<?php echo $placeUser->getEmail(); ?>" required/><br/>
+                    <label for="description_modify" class="text-lighten-2 col s4"><h6><strong>Description</strong></h6></label>
+                    <textarea id="description_modify" type="text" name="description" class="materialize-textarea"><?php echo $placeUser->getDescripcion(); ?></textarea><br/>
+                    <div class="right-align"><button class="btn-large waves-effect waves-light light-blue right-aligned" id="submit_modify" type="submit" name="submit" value="modify">Save Profile</button></div>
                 </div>
                 <div class="columnaMainRight">
-                    <label for="name_singup" class="text-lighten-2 col s4"><h6><strong>Name</strong></h6></label>
-                    <input id="name_singup" type="text" name="name" required/><br/>
-                    <label for="lastname_singup" class="text-lighten-2 col s4"><h6><strong>Last Name</strong></h6></label>
-                    <input id="lastname_singup" type="text" name="lastname" required/><br/>
-                    <label for="birth_singup" class="text-lighten-2 col s4"><h6><strong id="birth_singup_label">Birth date</strong></h6></label>
-                    <input id="birth_singup" type="date" name="birthdate" required/><br/>
+                    <label for="name_modify" class="text-lighten-2 col s4"><h6><strong>Name</strong></h6></label>
+                    <input id="name_modify" type="text" name="name" value="<?php echo $placeUser->getNombre(); ?>" required/><br/>
+                    <label for="lastname_modify" class="text-lighten-2 col s4"><h6><strong>Last Name</strong></h6></label>
+                    <input id="lastname_modify" type="text" name="lastname" value="<?php echo $placeUser->getAppelido(); ?>" required/><br/>
+                    <label for="birth_modify" class="text-lighten-2 col s4"><h6><strong id="birth_modify_label">Birth date</strong></h6></label>
+                    <input id="birth_modify" type="date" name="birthdate" value="<?php echo $placeUser->getBirthDate(); ?>" required/><br/>
                     <div class="file-field input-field">
-                        <div class="btn">
-                            <span>Profile image</span>
+                        <div class="btn waves-effect waves-light light-blue">
+                            <span>Change Profile image</span>
                             <input type="file" name="imagefile" id="id_image">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" id="image_singup" name="profileimage">
+                            <input class="file-path validate" type="text" id="image_modify" name="profileimage">
                         </div>
+                        <h6 id="image_modify_label" class="red-text"></h6>
                     </div>
-                    <h6 id="image_singup_label" class="red-text"></h6>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
 <?php echo $template->footer();?>
-
-<script src="../../js/sha256.js"></script>
-<script>
-    function cifrar(){
-        let input_pass = document.getElementById("pass_singup");
-        input_pass.value = sha256(input_pass.value);
-        let input_pass2 = document.getElementById("pass2_singup");
-        input_pass2.value = sha256(input_pass2.value);
-    }
-</script>
 </body>
 </html>
 

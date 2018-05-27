@@ -45,6 +45,23 @@ if(isset($_POST['logout'])){
     session_start();
 }
 
+if(isset($_POST['follow'])){
+    $user = $_SESSION['username'];
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $userId = $usuarioDao->getIdByName($user);
+    $autorId = $usuarioDao->getIdByName($userSelec);
+
+    $resultado = SubsDAO::singletonSubs()->addSub($userId, $autorId, 0);
+}
+
+if(isset($_POST['unfollow'])){
+    $user = $_SESSION['username'];
+    $usuarioDao = UsuarioDAO::singletonUsuario();
+    $userId = $usuarioDao->getIdByName($user);
+    $autorId = $usuarioDao->getIdByName($userSelec);
+    $resultado = SubsDAO::singletonSubs()->unSub($userId, $autorId);
+}
+
 //var_dump($_SESSION);
 
 if(empty($_SESSION)){
@@ -100,7 +117,7 @@ $template = new Template('');
             $galerias1 = $galeriaDao->getUltGaleriasByUser($autor->getId());
             ?>
         <div class="columnaPostLeft">
-            <?php if($_SESSION['username'] === $userSelec){ ?>
+            <?php if(isset($_SESSION['username']) && $_SESSION['username'] === $userSelec){ ?>
                 <div class="valign-wrapper">
                     <div class="col s8">
                         <a href="interfaz/privado/CreateGallery">
@@ -142,13 +159,13 @@ $template = new Template('');
                 </div>
             <?php }
             }else{ ?>
-                <h5 class="center"><strong>Wow, looks like this Creator hasn´t upload any Gallery yet...</strong></h5>
+                <h5 class="center"><strong>Wow, looks like this Creator hasn´t uploaded any Gallery yet...</strong></h5>
            <?php } ?>
             </div>
         </div>
         <div class="columnaPostRight">
             <div class="card-panel grey lighten-5 z-depth-1 col s12">
-                <?php if($_SESSION['username'] === $userSelec){ ?>
+                <?php if(isset($_SESSION['username']) && $_SESSION['username'] === $userSelec){ ?>
                     <div class="valign-wrapper">
                         <div class="col s8">
                             <a href="interfaz/privado/Profile">
@@ -164,7 +181,7 @@ $template = new Template('');
                     <div class="col s8">
                         <span class="black-text">
                             <h5>
-                                <b>
+                                <b id="autor_name">
                                     <?php echo $autor->getUsername(); ?>
                                 </b>
                             </h5>
@@ -173,17 +190,32 @@ $template = new Template('');
                 </div>
                 <div class="col s12">
                     <span class="black-text center-align">
-                        <p>
                             <h6>
                                 <b>
                                     <?php $subsDao = SubsDAO::singletonSubs();
                                     $sub = $subsDao->countSubsByAutor($autor->getId());
                                     echo $sub; ?>
                                 </b>
-                                Followers
+                                Followers<br><br>
+                                <?php if(isset($_SESSION['username']) && $userSelec !== $_SESSION['username']){
+                                    $usuario = $usuarioDao->getUserbyName($_SESSION['username']);
+                                    $follow = $subsDao->getSubByUserAndAutor($usuario->getId(), $autor->getId());
+                                    if(empty($follow)){ ?>
+                                        <form method="post" action="<?php echo $userSelec; ?>" enctype="multipart/form-data">
+                                            <button class="btn waves-effect waves-light white black-text" name="follow">Follow</button>
+                                        </form>
+                                <?php }else{ ?>
+                                        <form method="post" action="<?php echo $userSelec; ?>" enctype="multipart/form-data">
+                                            <button class="btn waves-effect waves-light red black-text" name="unfollow" >Unfollow</button>
+                                        </form>
+                                <?php }
+                                } ?>
                             </h6>
-                        </p>
-                        <?php echo $autor->getDescripcion(); ?>
+                        <?php  if(empty($autor->getDescripcion())){
+                            echo 'This creator doesn´t have any description yet...';
+                        }else{
+                            echo $autor->getDescripcion();
+                        } ?>
                     </span>
                 </div>
             </div>

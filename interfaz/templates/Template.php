@@ -47,7 +47,7 @@ class template
                                 <div class="row nav-wrapper">
                                     <a class="black-text" href="'. $this->ROOT. '/' .$_SESSION['username'].'">
                                         <div class="col">
-                                            <img src="'. Funciones::showImageProfile($profileImage, $this->ROOT) .'" alt="" class="circle yellow" height="60px" width="60px">
+                                            <img src="'. Funciones::showImageProfile($profileImage, $this->ROOT) .'" alt="" class="circle" height="60px" width="60px">
                                         </div>
                                         <div class="col s5">
                                             <span >
@@ -76,7 +76,16 @@ class template
         <ul class="menu">
             <li><a><i class="icono izquierda fa fa-cogs" aria-hidden="false"></i>Navigate<i id="boton-menu" class="small material-icons icono derecha fa fa-chevron-down" aria-hidden="true">menu</i></a>
                 <ul class="submenu">
-                    <li><a href="#">Search<i class="icono derecha fa fa-chevron-down" aria-hidden="true"></i></a></li>
+                    <li>
+                        <form method="get" name="search" action="'. $this->ROOT .'interfaz/publico/Busqueda">
+                            <div class="input-field col s10">
+                                <p>
+                                    <i class="black-text material-icons prefix">search</i>
+                                    <input id="search" name="search" type="search" placeholder="Search" class="validate">
+                                </p>
+                            </div>
+                        </form>
+                    </li>
                     <li><a href="#">Categories</a>
                     <ul class="submenu">
                         <li><a href="#">Categories</a>
