@@ -45,7 +45,7 @@ class template
                 }else {
                     $html .= '<li>
                                 <div class="row nav-wrapper">
-                                    <a class="black-text" href="'. $this->ROOT. '/' .$_SESSION['username'].'">
+                                    <a class="black-text" href="'. $this->ROOT . $_SESSION['username'].'">
                                         <div class="col">
                                             <img src="'. Funciones::showImageProfile($profileImage, $this->ROOT) .'" alt="" class="circle" height="60px" width="60px">
                                         </div>

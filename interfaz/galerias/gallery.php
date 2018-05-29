@@ -9,13 +9,12 @@
 session_start();
 
 include_once '../../persistencia/GaleriaDAO.php';
-include_once '../../objetos/Galeria.php';
 include_once '../../persistencia/UsuarioDAO.php';
-include_once '../../objetos/Usuario.php';
 include_once '../../persistencia/SubsDAO.php';
-include_once '../../objetos/Subs.php';
 
-//var_dump($_SESSION);
+include_once '../../objetos/Galeria.php';
+include_once '../../objetos/Usuario.php';
+include_once '../../objetos/Subs.php';
 
 
 if(empty($_SESSION)){
@@ -42,18 +41,20 @@ if(isset($_GET['autor']) && isset($_GET['gal'])) {
 
         $subsDao = SubsDAO::singletonSubs();
         $sub = $subsDao->getSubByUserAndAutor($user->getId(), $autor->getId());
-        if($sub != null){
-            if($sub->getTipo() >= $galeria->getTipo()){
+        if($user->getId() !== $autor->getId()) {
+            if ($sub != null) {
+                if ($sub->getTipo() >= $galeria->getTipo()) {
 
-            }else{
-                header('Location: index');
-            }
+                } else {
+                    header('Location: index');
+                }
 
-        }else{
-            if($galeria->getTipo() == 0){
+            } else {
+                if ($galeria->getTipo() == 0) {
 
-            }else{
-                header('Location: index');
+                } else {
+                    header('Location: index');
+                }
             }
         }
 
@@ -190,7 +191,7 @@ if(isset($_GET['autor']) && isset($_GET['gal'])) {
         });
 
         var disqus_config = function () {
-        this.page.url = 'http://sketching.sytes.net/interfaz/galerias/gallery?user=<?php echo $user; ?>&gal=<?php echo $gal; ?>';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.url = 'http://sketching.sytes.net/interfaz/galerias/gallery?user=<?php echo $autor->getUsername(); ?>&gal=<?php echo $gal; ?>';  // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = '<?php echo $gal; ?>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
 

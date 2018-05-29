@@ -12,11 +12,6 @@ require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
 require_once '../../objetos/Acceso.php';
 
-
-require_once '../../persistencia/UsuarioDAO.php';
-require_once '../../objetos/Usuario.php';
-require_once '../../objetos/Acceso.php';
-
 if(!empty($_SESSION)){
     header('Location: ../../index');
 }

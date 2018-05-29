@@ -7,8 +7,6 @@
  */
 session_start();
 
-//var_dump($_SESSION);
-
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';

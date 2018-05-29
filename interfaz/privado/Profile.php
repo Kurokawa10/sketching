@@ -9,10 +9,6 @@ session_start();
 
 require_once '../../persistencia/UsuarioDAO.php';
 require_once '../../objetos/Usuario.php';
-require_once '../../objetos/Acceso.php';
-require_once '../../persistencia/UsuarioDAO.php';
-require_once '../../objetos/Usuario.php';
-require_once '../../objetos/Acceso.php';
 include '../templates/Template.php';
 
 

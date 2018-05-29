@@ -9,14 +9,14 @@
 session_start();
 
 include_once 'persistencia/UsuarioDAO.php';
-include_once 'objetos/Usuario.php';
-include_once 'interfaz/templates/Funciones.php';
 include_once 'persistencia/GaleriaDAO.php';
-include_once 'objetos/Galeria.php';
 include_once 'persistencia/SubsDAO.php';
+
+include_once 'objetos/Usuario.php';
+include_once 'objetos/Galeria.php';
 include_once 'objetos/Subs.php';
 
-//var_dump($_SESSION);
+include_once 'interfaz/templates/Funciones.php';
 
 $path = ltrim($_SERVER['REQUEST_URI'], '/');    // Trim leading slash(es)
 $elements = explode('/', $path);                // Split path on slashes
@@ -117,10 +117,10 @@ $template = new Template('');
             $galerias1 = $galeriaDao->getUltGaleriasByUser($autor->getId());
             ?>
         <div class="columnaPostLeft">
-            <?php if(isset($_SESSION['username']) && $_SESSION['username'] === $userSelec){ ?>
+            <?php if(isset($_SESSION['username']) && $_SESSION['username'] === $autor->getUsername()){ ?>
                 <div class="valign-wrapper">
                     <div class="col s8">
-                        <a href="interfaz/privado/CreateGallery">
+                        <a href="interfaz/privado/uploadgallery">
                             <button class="btn waves-effect waves-light light-blue">New Gallery</button>
                         </a>
                     </div>
@@ -132,7 +132,12 @@ $template = new Template('');
                 foreach ($galerias1 as $value) { ?>
                 <div class="vikash" id="<?php echo $value->getId(); ?>">
                     <div class="col s12">
-                        <div class="card large">
+                        <div class="card large <?php
+                        $subsDao = SubsDAO::singletonSubs();
+                        $usuarioDao = UsuarioDAO::singletonUsuario();
+                        $userId = $usuarioDao->getIdByName($_SESSION['username']);
+                        $noSub = $subsDao->getSubTipo($userId, $autor->getId());
+                        if( $value->getTipo() > $noSub && $autor->getUsername() !== $_SESSION['username'] ){ echo 'lock';} ?>">
                             <div class="card-image">
                                 <a href="interfaz/galerias/gallery?autor=<?php echo $autor->getUsername(); ?>&gal=<?php echo $value->getId(); ?>">
                                     <img class="responsive-img materialboxed" src="interfaz/galerias/<?php echo $autor->getUsername().'/'.$value->getId().'/0.jpg'; ?>">

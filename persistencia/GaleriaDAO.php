@@ -103,6 +103,34 @@ class GaleriaDAO
         return $arrayGalerias;
     }
 
+
+    public function addGaleria(Galeria $galeria){
+        try{
+            $consulta="INSERT INTO galeria (id, nombre, descripcion, autor, fecha_creacion, visitas, tipo) values (null,?,?,?,?,?,?)";
+            $query=$this->db->preparar($consulta);
+            @$query->bindParam(1,$galeria->getNombre());
+            @$query->bindParam(2,$galeria->getDescripcion());
+            @$query->bindParam(3,$galeria->getAutor());
+            @$query->bindParam(4,$galeria->getFechaCreacion());
+            @$query->bindParam(5,$galeria->getVisitas());
+            @$query->bindParam(6,$galeria->getTipo());
+
+            $query->execute();
+
+            try{
+                $consulta="SELECT MAX(id) FROM galeria";
+                $query=$this->db->preparar($consulta);
+                $query->execute();
+                $id=$query->fetchAll();
+            }catch (Exception $ex){
+                $id = 0;
+            }
+        }catch (Exception $ex){
+            $id = 0;
+        }
+        return $id[0][0];
+    }
+
     public function addvisita($idGaleria)
     {
         try {

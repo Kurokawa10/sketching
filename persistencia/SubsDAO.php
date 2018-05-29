@@ -74,14 +74,36 @@ class SubsDAO
 
             $query->execute();
             $lSubs=$query->fetchAll();
-            $arraySubs = null;
+
         } catch (Exception $ex) {
             echo "Se ha producido un error en getSubByUserAndAutor";
         }
-        foreach ($lSubs as $clave => $valor){
-            $arraySubs[$clave] = new Subs($valor[0], $valor[1], $valor[2], $valor[3]);
+        if(empty($lSubs)){
+            $sub = null;
+        }else {
+            $sub = new Subs($lSubs[0][0], $lSubs[0][1], $lSubs[0][2], $lSubs[0][3]);
         }
-        return $arraySubs[0];
+        return $sub;
+    }
+
+    public function getSubTipo($userId, $autorId)
+    {
+        try {
+            $consulta="SELECT tipo FROM subs WHERE id_user = ". $userId ." AND id_autor = " . $autorId;
+
+            $query=$this->db->preparar($consulta);
+
+            $query->execute();
+            $lSubs=$query->fetchAll();
+
+        } catch (Exception $ex) {
+            echo "Se ha producido un error en getSubByUserAndAutor";
+        }
+        if(empty($lSubs[0][0])){
+            $lSubs[0][0] = 0;
+        }
+
+        return $lSubs[0][0];
     }
 
     public function countSubsByAutor($autorId)
